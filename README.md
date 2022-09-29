@@ -11,8 +11,7 @@ Once you have JDK installed and set up you can procced to the following step.
 
 ### ***2.Downloading the application***
 Download the application by choosing "Download ZIP" from the "Code" dropdown menu as shown in the picture below.
-
- ![picture1](https://i.postimg.cc/dtZXqhdC/instruction1.jpg)
+ ![picture1](bank-system/img/instruction1.jpg)
 
 After downloading the zip file extract it to the location of your choice.
 
@@ -23,7 +22,7 @@ Open the extracted zip folder and navigate to
 
 You then need to copy the apsolute path, to do so right click on the folder address bar and select "Copy address" (see the piture below for more details).
 
- ![picture1](https://i.postimg.cc/W1j8q8tM/instruction2.jpg)
+ ![picture1](bank-system/img/instruction2.jpg)
 
  Open up the command line. Write "cd ", paste in the address which you coppied and press enter. (To paste the address use CTRL+V or right click the mouse on the command line).
 
