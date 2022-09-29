@@ -16,8 +16,8 @@ public class Account {
         addTransaction(String.format("--account with the id %d was created with %.2f$--", id, balance));
     }
 
-    public void addTransaction(String message) {
-        transactions.add(message);
+    public void addTransaction(String transactionDescription) {
+        transactions.add(transactionDescription);
     }
 
     public long getId() {

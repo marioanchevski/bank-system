@@ -116,7 +116,7 @@ public class BankSystem {
                     TransactionType transactionType = null;
 
                     String transactionMenuDecision = scanner.nextLine().trim();
-                    boolean backOptionOrInvalidInput = true;
+                    boolean backOptionOrInvalidInput = false;
                     switch (transactionMenuDecision) {
                         case "1":
                             transactionType = TransactionType.WITHDRAW;
@@ -128,16 +128,16 @@ public class BankSystem {
                             transactionType = TransactionType.NORMAL;
                             break;
                         case "4":
-                            backOptionOrInvalidInput = false;
+                            backOptionOrInvalidInput = true;
                             break;
                         default:
                             System.out.println("Please select a valid option.");
-                            backOptionOrInvalidInput = false;
+                            backOptionOrInvalidInput = true;
                             break;
                     }
 
                     long idFrom, idTo;
-                    if (backOptionOrInvalidInput) {
+                    if (!backOptionOrInvalidInput) {
                         idFrom = getValidAccountId(scanner);
 
                         if (transactionType == TransactionType.NORMAL) {
