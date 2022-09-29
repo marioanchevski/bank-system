@@ -10,14 +10,31 @@ Before you can use the application you must first install the JDK (Java Developm
 Once you have JDK installed and set up you can procced to the following step.
 
 ### ***2.Downloading the application***
-Download the application by choosing "Download ZIP" from the "Code" dropdown menu as shown in the picture below.
+You can either clone the repository or download it manually.
+
+#### ***2.1 Clone the repository***
+To clone the repository open up the command line and write the following command: 
+
+```
+git clone https://github.com/marioanchevski/bank-system
+```
+Note: Be sure before you clone the repository to know the directory (folder) you are working in. If you want to change the working directory write the following command:
+```
+cd path
+``` 
+Path represent's the location of your directory for example C:\User\Desktop
+
+
+#### ***2.2 Download it manually***
+To download the application manually press "Download ZIP" from the "Code" dropdown menu as shown in the picture below.
+
  ![picture1](bank-system/img/instruction1.jpg)
 
 After downloading the zip file extract it to the location of your choice.
 
 ### ***3.Run the application***
 
-Open the extracted zip folder and navigate to 
+Once you cloned or downloaded the application navigate to
 > <p style="font-size:20px">\bank-system\out\production\bank-system </p>
 
 You then need to copy the apsolute path, to do so right click on the folder address bar and select "Copy address" (see the piture below for more details).
