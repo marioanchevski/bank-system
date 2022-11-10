@@ -1,3 +1,8 @@
+package com.mybanksystem;
+
+import com.mybanksystem.Transaction;
+import com.mybanksystem.TransactionType;
+
 public class FlatAmountProvisionTransaction extends Transaction {
     private double flatAmount;
 

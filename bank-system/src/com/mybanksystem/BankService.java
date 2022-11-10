@@ -1,3 +1,8 @@
+package com.mybanksystem;
+
+import com.mybanksystem.exceptions.InsufficientFundsException;
+import com.mybanksystem.exceptions.NonExistentAccountException;
+
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -21,30 +26,22 @@ public class BankService {
         if (amountToTransfer == 0)
             throw new InsufficientFundsException();
 
-        if (fromAccount.getId() == toAccount.getId()) {
+        if (fromAccount.getId().equals(toAccount.getId())) {
             if (transaction.getType().equals(TransactionType.DEPOSIT)) {
+                // should there be provision if you try to deposit to your account
                 if (fromAccountBalance + amountToTransfer < provision)
                     throw new InsufficientFundsException(amountToTransfer);
+                accountService.updateAccount(fromAccount, toAccount, transaction);
 
-                fromAccount.getTransactions().add(String.format("--deposited %.2f$ to my account, paid: %.2f$ provision of type %s--", amountToTransfer, provision, transaction.getDescription()));
-                amountToTransfer *= -1;
-            } else if (transaction.getType().equals(TransactionType.WITHDRAW)) {
-
+            } else if (transaction.getType().equals(TransactionType.WITHDRAW))
                 if (fromAccountBalance < totalTransferAmount)
                     throw new InsufficientFundsException(fromAccountBalance, amountToTransfer);
 
-                fromAccount.getTransactions().add(String.format("--withdrew %.2f$ from my account, paid: %.2f$ provision of type %s--", amountToTransfer, provision, transaction.getDescription()));
-            }
-            fromAccount.setBalance(fromAccountBalance - (amountToTransfer + provision));
+            accountService.updateAccount(fromAccount, toAccount, transaction);
         } else {
             if (fromAccountBalance < totalTransferAmount)
                 throw new InsufficientFundsException(fromAccountBalance, amountToTransfer);
-
-            fromAccount.setBalance(fromAccountBalance - totalTransferAmount);
-            fromAccount.getTransactions().add(String.format("--deposited %.2f$ to account:%d, paid: %.2f$ provision of type %s--", amountToTransfer, toAccount.getId(), provision, transaction.getDescription()));
-
-            toAccount.setBalance(toAccountBalance + amountToTransfer);
-            toAccount.getTransactions().add(String.format("--received %.2f$ from account:%d--", amountToTransfer, fromAccount.getId()));
+            accountService.updateAccount(fromAccount, toAccount, transaction);
         }
 
         bank.setTotalTransferAmount(bank.getTotalTransferAmount() + Math.abs(amountToTransfer));
@@ -58,7 +55,7 @@ public class BankService {
     }
 
     private void printDetailedAccount(Account account) {
-        String accountInformation = String.format("Account ID: %d", account.getId()) +
+        String accountInformation = String.format("com.mybanksystem.Account ID: %d", account.getId()) +
                 String.format("\nBelongs to: %s", account.getName()) +
                 String.format("\nBalance: %.2f$", account.getBalance()) +
                 String.format("\nTransactions:\n%s", String.join("\n", account.getTransactions()));
@@ -66,7 +63,7 @@ public class BankService {
     }
 
     public String printAccount(Account account) {
-        return String.format("AccountID: %d\tAccount owner: %-15s\tCurrent balance: %10.2f$", account.getId(), account.getName(), account.getBalance());
+        return String.format("AccountID: %d\tcom.mybanksystem.Account owner: %-15s\tCurrent balance: %10.2f$", account.getId(), account.getName(), account.getBalance());
     }
 
     private Optional<Account> getAccount(long id, Bank bank) {
@@ -91,7 +88,7 @@ public class BankService {
 
     }
     public String printBank(Bank bank) {
-        return String.format("Bank: %s\nFlatFee: %.2f$ \nPercentFee: %d%%\nThresholdAmount: %.2f$\n",
+        return String.format("com.mybanksystem.Bank: %s\nFlatFee: %.2f$ \nPercentFee: %d%%\nThresholdAmount: %.2f$\n",
                 bank.getName(), bank.getFlatFeeAmount(), bank.getPercentFeeAmount(), bank.getThresholdAmount());
     }
 

@@ -1,3 +1,5 @@
+package com.mybanksystem.exceptions;
+
 public class InsufficientFundsException extends Exception {
     public InsufficientFundsException(double amount) {
         super(String.format("You can not deposit %.2f$. After the bank fee's you would have negative balance in your account.", amount));

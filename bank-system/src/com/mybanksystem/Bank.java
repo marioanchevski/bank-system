@@ -1,7 +1,7 @@
+package com.mybanksystem;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class Bank {
     private Long id;

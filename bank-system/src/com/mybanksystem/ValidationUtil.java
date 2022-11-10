@@ -1,3 +1,5 @@
+package com.mybanksystem;
+
 import java.util.Scanner;
 
 public class ValidationUtil {

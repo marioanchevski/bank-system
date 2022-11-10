@@ -1,4 +1,8 @@
-import java.util.List;
+package com.mybanksystem;
+
+import com.mybanksystem.exceptions.InsufficientFundsException;
+import com.mybanksystem.exceptions.NonExistentAccountException;
+
 import java.util.Scanner;
 
 public class BankSystem {
@@ -7,12 +11,12 @@ public class BankSystem {
         Scanner scanner = new Scanner(System.in);
         BankService bankService = new BankService();
 
-        Bank bank = new Bank("LinkPlus-Bank",10.00,2,10000.00);
+        Bank bank = new Bank("LinkPlus-com.mybanksystem.Bank",10.00,2,10000.00);
         bankService.addAccount(new Account("Mario", 5.00), bank);
         bankService.addAccount(new Account("Vojo", 1000.00), bank);
         bankService.addAccount(new Account("Filip and Ata", 5000.50), bank);
 
-        //Bank bank = init(scanner);
+        //com.mybanksystem.Bank bank = init(scanner);
 
         System.out.println(bankService.printBank(bank));
 
@@ -27,7 +31,7 @@ public class BankSystem {
                     break;
                 case "2":
 
-                    // should this method be part of ValidationUtil?
+                    // should this method be part of com.mybanksystem.ValidationUtil?
                     if (ValidationUtil.bankHasNoAccounts(bank))
                         break;
                     ValidationUtil.showTransactionMenu();
@@ -68,10 +72,10 @@ public class BankSystem {
                         Transaction t1 = ValidationUtil.getTransactionType(transactionType, idFrom, idTo, amount, bank);
                         try {
                             bankService.makeTransaction(t1, bank);
-                            System.out.println("Transaction successful.");
+                            System.out.println("com.mybanksystem.Transaction successful.");
                         } catch (InsufficientFundsException | NonExistentAccountException e) {
                             System.out.println(e.getMessage());
-                            System.out.println("Transaction failed.");
+                            System.out.println("com.mybanksystem.Transaction failed.");
                         }
                     }
                     break;

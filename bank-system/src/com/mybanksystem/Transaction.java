@@ -1,3 +1,5 @@
+package com.mybanksystem;
+
 public abstract class Transaction {
     private long fromId;
     private long toId;
