@@ -1,7 +1,4 @@
-package com.mybanksystem;
-
-import com.mybanksystem.Transaction;
-import com.mybanksystem.TransactionType;
+package com.mybanksystem.transaction;
 
 public class FlatAmountProvisionTransaction extends Transaction {
     private double flatAmount;
@@ -12,7 +9,7 @@ public class FlatAmountProvisionTransaction extends Transaction {
     }
 
     @Override
-    double getProvision() {
+    public double getProvision() {
         return flatAmount;
     }
 

@@ -1,4 +1,4 @@
-package com.mybanksystem.exceptions;
+package com.mybanksystem.account.exceptions;
 
 public class InsufficientFundsException extends Exception {
     public InsufficientFundsException(double amount) {
@@ -8,8 +8,8 @@ public class InsufficientFundsException extends Exception {
         super(String.format("Your current balance is: %.2f\nCan not withdraw %.2f$", balance, amount));
     }
 
-    public InsufficientFundsException() {
-        super("Can not transfer 0.00$");
+    public InsufficientFundsException(String message) {
+        super(message);
     }
 
 }

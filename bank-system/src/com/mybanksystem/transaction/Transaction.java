@@ -1,4 +1,4 @@
-package com.mybanksystem;
+package com.mybanksystem.transaction;
 
 public abstract class Transaction {
     private long fromId;
@@ -35,6 +35,6 @@ public abstract class Transaction {
         return description;
     }
 
-    abstract double getProvision();
+    public abstract double getProvision();
 
 }

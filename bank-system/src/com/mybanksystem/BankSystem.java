@@ -1,7 +1,17 @@
 package com.mybanksystem;
 
-import com.mybanksystem.exceptions.InsufficientFundsException;
-import com.mybanksystem.exceptions.NonExistentAccountException;
+import com.mybanksystem.account.Account;
+import com.mybanksystem.account.AccountService;
+import com.mybanksystem.account.AccountServiceImpl;
+import com.mybanksystem.bank.Bank;
+import com.mybanksystem.bank.BankService;
+import com.mybanksystem.bank.BankServiceImpl;
+import com.mybanksystem.account.exceptions.InsufficientFundsException;
+import com.mybanksystem.account.exceptions.NonExistentAccountException;
+import com.mybanksystem.transaction.Transaction;
+import com.mybanksystem.transaction.TransactionService;
+import com.mybanksystem.transaction.TransactionServiceImpl;
+import com.mybanksystem.transaction.TransactionType;
 
 import java.util.Scanner;
 
@@ -9,14 +19,16 @@ public class BankSystem {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        BankService bankService = new BankService();
+        AccountService accountService = new AccountServiceImpl();
+        BankService bankService = new BankServiceImpl(accountService);
+        TransactionService transactionService = new TransactionServiceImpl();
 
-        Bank bank = new Bank("LinkPlus-com.mybanksystem.Bank",10.00,2,10000.00);
-        bankService.addAccount(new Account("Mario", 5.00), bank);
-        bankService.addAccount(new Account("Vojo", 1000.00), bank);
-        bankService.addAccount(new Account("Filip and Ata", 5000.50), bank);
+        Bank bank = new Bank("LinkPlus-Bank", 10.00, 2, 10000.00);
+        bankService.addAccountToBank(new Account("Mario", 5.00), bank);
+        bankService.addAccountToBank(new Account("Vojo", 1000.00), bank);
+        bankService.addAccountToBank(new Account("Filip and Ata", 5000.50), bank);
 
-        //com.mybanksystem.Bank bank = init(scanner);
+        //com.mybanksystem.bank.Bank bank = init(scanner);
 
         System.out.println(bankService.printBank(bank));
 
@@ -27,13 +39,14 @@ public class BankSystem {
                 case "1":
                     String name = ValidationUtil.getValidName(scanner);
                     double balance = ValidationUtil.getValidAmountInput(scanner, ValidationUtil.AMOUNT_BALANCE_MSG);
-                    bankService.addAccount(new Account(name, balance), bank);
+                    bankService.addAccountToBank(new Account(name, balance), bank);
                     break;
                 case "2":
 
-                    // should this method be part of com.mybanksystem.ValidationUtil?
-                    if (ValidationUtil.bankHasNoAccounts(bank))
+                    if (!bankService.hasAccounts(bank)) {
+                        ValidationUtil.bankHasNoAccounts(bank);
                         break;
+                    }
                     ValidationUtil.showTransactionMenu();
                     TransactionType transactionType = null;
 
@@ -69,25 +82,27 @@ public class BankSystem {
                         } else
                             idTo = idFrom;
                         double amount = ValidationUtil.getValidAmountInput(scanner, ValidationUtil.TRANSACTION_AMOUNT_MSG);
-                        Transaction t1 = ValidationUtil.getTransactionType(transactionType, idFrom, idTo, amount, bank);
+                        Transaction t1 = transactionService.getTransactionInstance(transactionType, idFrom, idTo, amount, bank);
                         try {
                             bankService.makeTransaction(t1, bank);
-                            System.out.println("com.mybanksystem.Transaction successful.");
+                            System.out.println("Transaction successful.");
                         } catch (InsufficientFundsException | NonExistentAccountException e) {
                             System.out.println(e.getMessage());
-                            System.out.println("com.mybanksystem.Transaction failed.");
+                            System.out.println("Transaction failed.");
                         }
                     }
                     break;
                 case "3":
-                    if (ValidationUtil.bankHasNoAccounts(bank))
+                    if (!bankService.hasAccounts(bank)) {
+                        ValidationUtil.bankHasNoAccounts(bank);
                         break;
-                    bankService.printAccounts(bank);
+                    }
+                    accountService.printAccounts(bank);
                     break;
                 case "4":
                     idFrom = ValidationUtil.getValidAccountId(scanner);
                     try {
-                        bankService.getAccountDetails(idFrom, bank);
+                        accountService.getAccountDetails(idFrom, bank);
                     } catch (NonExistentAccountException e) {
                         System.out.println(e.getMessage());
                     }

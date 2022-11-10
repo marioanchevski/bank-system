@@ -1,5 +1,11 @@
 package com.mybanksystem;
 
+import com.mybanksystem.bank.Bank;
+import com.mybanksystem.transaction.FlatAmountProvisionTransaction;
+import com.mybanksystem.transaction.FlatPercentProvisionTransaction;
+import com.mybanksystem.transaction.Transaction;
+import com.mybanksystem.transaction.TransactionType;
+
 import java.util.Scanner;
 
 public class ValidationUtil {
@@ -21,12 +27,6 @@ public class ValidationUtil {
         System.out.println("================================\n");
     }
 
-    public static Transaction getTransactionType(TransactionType type, long fromId, long toId, double amount, Bank bank) {
-        if (amount < bank.getThresholdAmount())
-            return new FlatAmountProvisionTransaction(fromId, toId, amount, "FlatAmount", bank.getFlatFeeAmount(), type);
-        else
-            return new FlatPercentProvisionTransaction(fromId, toId, amount, "FlatPercent", bank.getPercentFeeAmount(), type);
-    }
 
     public static double getValidAmountInput(Scanner scanner, int msgtype) {
         String[] promptMsg = {"Enter account balance.",
@@ -69,12 +69,8 @@ public class ValidationUtil {
         return name;
     }
 
-    public static boolean bankHasNoAccounts(Bank bank) {
-        if (bank.getAccounts().isEmpty()) {
-            System.out.println("Currently there are no accounts in this bank.\nPlease create a new account.");
-            return true;
-        }
-        return false;
+    public static void bankHasNoAccounts(Bank bank) {
+        System.out.format("Currently there are no accounts in %s.\nPlease create a new account.\n", bank.getName());
     }
 
     public static int getValidFlatPercent(Scanner scanner) {
