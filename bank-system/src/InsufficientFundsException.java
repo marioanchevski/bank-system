@@ -6,4 +6,8 @@ public class InsufficientFundsException extends Exception {
         super(String.format("Your current balance is: %.2f\nCan not withdraw %.2f$", balance, amount));
     }
 
+    public InsufficientFundsException() {
+        super("Can not transfer 0.00$");
+    }
+
 }
