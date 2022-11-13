@@ -1,4 +1,4 @@
-package com.mybanksystem;
+package com.mybanksystem.util;
 
 import com.mybanksystem.bank.Bank;
 import com.mybanksystem.transaction.FlatAmountProvisionTransaction;
@@ -9,10 +9,10 @@ import com.mybanksystem.transaction.TransactionType;
 import java.util.Scanner;
 
 public class ValidationUtil {
-    final static int AMOUNT_BALANCE_MSG = 0;
-    final static int TRANSACTION_AMOUNT_MSG = 1;
-    final static int FLAT_AMOUNT_MSG = 2;
-    final static int FLAT_PERCENT_MSG = 3;
+    public final static int AMOUNT_BALANCE_MSG = 0;
+    public final static int TRANSACTION_AMOUNT_MSG = 1;
+    public final static int FLAT_AMOUNT_MSG = 2;
+    public final static int FLAT_PERCENT_MSG = 3;
 
     public static void showMenu() {
         System.out.println("\n=============MAIN MENU==============");

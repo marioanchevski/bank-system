@@ -12,6 +12,7 @@ import com.mybanksystem.transaction.Transaction;
 import com.mybanksystem.transaction.TransactionService;
 import com.mybanksystem.transaction.TransactionServiceImpl;
 import com.mybanksystem.transaction.TransactionType;
+import com.mybanksystem.util.ValidationUtil;
 
 import java.util.Scanner;
 
