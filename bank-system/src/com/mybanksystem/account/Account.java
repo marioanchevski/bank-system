@@ -1,5 +1,7 @@
 package com.mybanksystem.account;
 
+import com.mybanksystem.util.IdGenerator;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,11 +9,10 @@ public class Account {
     private Long id;
     private String name;
     private double balance;
-    private static long idSeed = 10000;
     private List<String> transactions;
 
     public Account(String name, double balance) {
-        this.id = idSeed++;
+        this.id = IdGenerator.generateAccountId();
         this.name = name;
         this.balance = balance;
         transactions = new ArrayList<>();

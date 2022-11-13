@@ -1,6 +1,7 @@
 package com.mybanksystem.bank;
 
 import com.mybanksystem.account.Account;
+import com.mybanksystem.util.IdGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +15,9 @@ public class Bank {
     private double thresholdAmount;
     private double flatFeeAmount;
     private int percentFeeAmount;
-    private static long idSeed = 100;
 
     public Bank(String name, double flatFee, int percentFee, double threshold) {
-        this.id = idSeed ++;
+        this.id = IdGenerator.generateBankId();
         this.name = name;
         this.accounts = new ArrayList<>();
         totalTransactionFeeAmount = 0.0;
