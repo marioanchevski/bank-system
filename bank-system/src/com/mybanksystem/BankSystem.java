@@ -1,17 +1,27 @@
 package com.mybanksystem;
 
-import com.mybanksystem.account.Account;
-import com.mybanksystem.account.AccountService;
-import com.mybanksystem.account.AccountServiceImpl;
+import com.mybanksystem.account.AccountRepository;
+import com.mybanksystem.account.service.AccountService;
+import com.mybanksystem.account.service.CreateAccountService;
+import com.mybanksystem.account.service.FindAccountService;
+import com.mybanksystem.account.service.Impl.AccountServiceImpl;
+import com.mybanksystem.account.service.Impl.AccountPrintingServiceImpl;
+import com.mybanksystem.account.service.AccountPrintingService;
+import com.mybanksystem.account.service.Impl.CreateAccountServiceImpl;
+import com.mybanksystem.account.service.Impl.FindAccountServiceImpl;
 import com.mybanksystem.bank.Bank;
-import com.mybanksystem.bank.BankService;
-import com.mybanksystem.bank.BankServiceImpl;
+import com.mybanksystem.bank.BankRepository;
+import com.mybanksystem.bank.service.BankPrintingService;
+import com.mybanksystem.bank.service.BankService;
+import com.mybanksystem.bank.service.FindBankService;
+import com.mybanksystem.bank.service.Impl.BankPrintingServiceImpl;
+import com.mybanksystem.bank.service.Impl.BankServiceImpl;
 import com.mybanksystem.account.exceptions.InsufficientFundsException;
 import com.mybanksystem.account.exceptions.NonExistentAccountException;
-import com.mybanksystem.transaction.Transaction;
-import com.mybanksystem.transaction.TransactionService;
-import com.mybanksystem.transaction.TransactionServiceImpl;
-import com.mybanksystem.transaction.TransactionType;
+import com.mybanksystem.bank.exceptions.NonExistentBankException;
+import com.mybanksystem.bank.service.Impl.FindBankServiceImpl;
+import com.mybanksystem.bootstrap.DataHolder;
+import com.mybanksystem.transaction.*;
 import com.mybanksystem.util.ValidationUtil;
 
 import java.util.Scanner;
@@ -19,19 +29,30 @@ import java.util.Scanner;
 public class BankSystem {
 
     public static void main(String[] args) {
+        // testing purposes
+        Long bankId = 100L;
         Scanner scanner = new Scanner(System.in);
-        AccountService accountService = new AccountServiceImpl();
-        BankService bankService = new BankServiceImpl(accountService);
-        TransactionService transactionService = new TransactionServiceImpl();
+        AccountRepository accountRepository = new AccountRepository();
+        FindAccountService findAccountService = new FindAccountServiceImpl(accountRepository);
+        TransactionRepository transactionRepository = new TransactionRepository();
+        BankRepository bankRepository = new BankRepository();
+        DataHolder dataHolder = new DataHolder(bankRepository, accountRepository);
+        dataHolder.init();
+        AccountService accountService = new AccountServiceImpl(findAccountService, transactionRepository);
+        AccountPrintingService printAccountService = new AccountPrintingServiceImpl(bankRepository, findAccountService);
+        FindBankService findBankService = new FindBankServiceImpl(bankRepository);
+        BankService bankService = new BankServiceImpl(transactionRepository, findBankService, accountService, findAccountService);
+        BankPrintingService bankPrintingService = new BankPrintingServiceImpl(findBankService);
+        TransactionService transactionService = new TransactionServiceImpl(transactionRepository, findBankService);
+        CreateAccountService createAccountService = new CreateAccountServiceImpl(findBankService, accountRepository);
 
-        Bank bank = new Bank("LinkPlus-Bank", 10.00, 2, 10000.00);
-        bankService.addAccountToBank(new Account("Mario", 5.00), bank);
-        bankService.addAccountToBank(new Account("Vojo", 1000.00), bank);
-        bankService.addAccountToBank(new Account("Filip and Ata", 5000.50), bank);
+        //Bank bank = init(scanner);
 
-        //com.mybanksystem.bank.Bank bank = init(scanner);
-
-        System.out.println(bankService.printBank(bank));
+        try {
+            System.out.println(bankPrintingService.printBankDetails(bankId));
+        } catch (NonExistentBankException e) {
+            System.out.println(e.getMessage());
+        }
 
         while (true) {
             ValidationUtil.showMenu();
@@ -40,12 +61,17 @@ public class BankSystem {
                 case "1":
                     String name = ValidationUtil.getValidName(scanner);
                     double balance = ValidationUtil.getValidAmountInput(scanner, ValidationUtil.AMOUNT_BALANCE_MSG);
-                    bankService.addAccountToBank(new Account(name, balance), bank);
+
+                    try {
+                        createAccountService.addAccountToBank(name, balance, bankId);
+                    } catch (NonExistentBankException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case "2":
 
-                    if (!bankService.hasAccounts(bank)) {
-                        ValidationUtil.bankHasNoAccounts(bank);
+                    if (findBankService.findBankById(bankId).get().getAccounts().isEmpty()) {
+                        ValidationUtil.bankHasNoAccounts();
                         break;
                     }
                     ValidationUtil.showTransactionMenu();
@@ -83,41 +109,56 @@ public class BankSystem {
                         } else
                             idTo = idFrom;
                         double amount = ValidationUtil.getValidAmountInput(scanner, ValidationUtil.TRANSACTION_AMOUNT_MSG);
-                        Transaction t1 = transactionService.getTransactionInstance(transactionType, idFrom, idTo, amount, bank);
+                        TransactionContext context = new TransactionContext(transactionType, idFrom, idTo, amount, bankId);
+
+                        String transactionId = transactionService.createTransaction(context);
                         try {
-                            bankService.makeTransaction(t1, bank);
+                            bankService.makeTransaction(transactionId, bankId);
                             System.out.println("Transaction successful.");
-                        } catch (InsufficientFundsException | NonExistentAccountException e) {
+                        } catch (InsufficientFundsException | NonExistentAccountException | NonExistentBankException e) {
                             System.out.println(e.getMessage());
                             System.out.println("Transaction failed.");
                         }
                     }
                     break;
                 case "3":
-                    if (!bankService.hasAccounts(bank)) {
-                        ValidationUtil.bankHasNoAccounts(bank);
+                    if (findBankService.findBankById(bankId).get().getAccounts().isEmpty()) {
+                        ValidationUtil.bankHasNoAccounts();
                         break;
                     }
-                    accountService.printAccounts(bank);
+                    try {
+                        printAccountService.printAllAccountsInBank(bankId);
+                    } catch (NonExistentBankException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case "4":
                     idFrom = ValidationUtil.getValidAccountId(scanner);
                     try {
-                        accountService.getAccountDetails(idFrom, bank);
+                        printAccountService.printAccountDetails(idFrom);
                     } catch (NonExistentAccountException e) {
                         System.out.println(e.getMessage());
                     }
                     break;
                 case "5":
-                    System.out.println(bankService.printBank(bank));
+                    try {
+                        System.out.println(bankPrintingService.printBankDetails(bankId));
+                    } catch (NonExistentBankException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case "6":
-                    System.out.println(bankService.getTotalTransactionFeeAmount(bank));
+                    if (findBankService.findBankById(bankId).isPresent())
+                        System.out.format("Total transaction fee: %10.2f$",
+                                findBankService.findBankById(bankId).get().getTotalTransactionFeeAmount());
                     break;
                 case "7":
-                    System.out.println(bankService.getTotalTotalTransferAmount(bank));
+                    if (findBankService.findBankById(bankId).isPresent())
+                        System.out.format("Total transfer amount: %10.2f$",
+                                findBankService.findBankById(bankId).get().getTotalTransferAmount());
                     break;
                 case "8":
+                    Bank bank  = findBankService.findBankById(bankId).get();
                     System.out.println("Thank you for using " + bank.getName());
                     return;
                 default:

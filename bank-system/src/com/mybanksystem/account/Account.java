@@ -1,7 +1,5 @@
 package com.mybanksystem.account;
 
-import com.mybanksystem.util.IdGenerator;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,11 +10,11 @@ public class Account {
     private List<String> transactions;
 
     public Account(String name, double balance) {
-        this.id = IdGenerator.generateAccountId();
+        this.id = null;
         this.name = name;
         this.balance = balance;
         transactions = new ArrayList<>();
-        transactions.add(String.format("--account with the id %d was created with %.2f$--", id, balance));
+        transactions.add(String.format("--Account created with %.2f$--", balance));
     }
 
     public Long getId() {
@@ -39,4 +37,7 @@ public class Account {
         return transactions;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

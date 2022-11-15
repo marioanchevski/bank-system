@@ -1,7 +1,6 @@
 package com.mybanksystem.bank;
 
 import com.mybanksystem.account.Account;
-import com.mybanksystem.util.IdGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +14,8 @@ public class Bank {
     private double thresholdAmount;
     private double flatFeeAmount;
     private int percentFeeAmount;
-
     public Bank(String name, double flatFee, int percentFee, double threshold) {
-        this.id = IdGenerator.generateBankId();
+        this.id = null;
         this.name = name;
         this.accounts = new ArrayList<>();
         totalTransactionFeeAmount = 0.0;
@@ -26,6 +24,7 @@ public class Bank {
         percentFeeAmount = percentFee;
         thresholdAmount = threshold;
     }
+
     public void setTotalTransactionFeeAmount(double totalTransactionFeeAmount) {
         this.totalTransactionFeeAmount = totalTransactionFeeAmount;
     }
@@ -35,7 +34,6 @@ public class Bank {
     public double getThresholdAmount() {
         return thresholdAmount;
     }
-
     public double getFlatFeeAmount() {
         return flatFeeAmount;
     }
@@ -47,6 +45,7 @@ public class Bank {
     public double getTotalTransferAmount() {
         return totalTransferAmount;
     }
+
     public double getTotalTransactionFeeAmount() {
         return totalTransactionFeeAmount;
     }
@@ -56,6 +55,15 @@ public class Bank {
     public List<Account> getAccounts() {
         return accounts;
     }
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
+    }
 }
