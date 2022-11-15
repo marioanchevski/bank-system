@@ -69,8 +69,8 @@ public class ValidationUtil {
         return name;
     }
 
-    public static void bankHasNoAccounts(Bank bank) {
-        System.out.format("Currently there are no accounts in %s.\nPlease create a new account.\n", bank.getName());
+    public static void bankHasNoAccounts() {
+        System.out.println("Currently there are no accounts in this bank.\nPlease create a new account.\n");
     }
 
     public static int getValidFlatPercent(Scanner scanner) {

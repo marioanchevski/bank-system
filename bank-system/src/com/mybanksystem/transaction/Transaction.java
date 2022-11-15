@@ -1,13 +1,17 @@
 package com.mybanksystem.transaction;
 
 public abstract class Transaction {
+    private String id;
     private long fromId;
     private long toId;
     private double amount;
     private String description;
     private TransactionType type;
+    private long bankId;
 
-    public Transaction(long fromId, long toId, double amount, String description, TransactionType type) {
+    public Transaction(long bankId, long fromId, long toId, double amount, String description, TransactionType type) {
+        id = null;
+        this.bankId = bankId;
         this.fromId = fromId;
         this.toId = toId;
         this.amount = amount;
@@ -37,4 +41,7 @@ public abstract class Transaction {
 
     public abstract double getProvision();
 
+    public String getId() {
+        return id;
+    }
 }
