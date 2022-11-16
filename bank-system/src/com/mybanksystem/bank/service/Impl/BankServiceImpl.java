@@ -34,8 +34,6 @@ public class BankServiceImpl implements BankService {
         Transaction transaction = transactionRepository.findTransactionById(transactionId);
         Account fromAccount = findAccountService.findAccountById(transaction.getFromId())
                 .orElseThrow(() -> new NonExistentAccountException(transaction.getFromId()));
-        Account toAccount = findAccountService.findAccountById(transaction.getToId())
-                .orElseThrow(() -> new NonExistentAccountException(transaction.getFromId()));
 
         double totalTransferAmount = transaction.getAmount() + transaction.getProvision();
 

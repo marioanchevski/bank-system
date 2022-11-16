@@ -25,12 +25,7 @@ public class AccountServiceImpl implements AccountService {
         Account accountTo = findAccountService.findAccountById(transaction.getToId())
                 .orElseThrow(()-> new NonExistentAccountException(transaction.getToId()));
 
-        accountFrom.getTransactions().add(String.format("%s: %.2f to account: %d, transaction fee: %.2f %s",
-                transaction.getType(),
-                transaction.getAmount(),
-                accountFrom.getId(),
-                transaction.getProvision(),
-                transaction.getDescription()));
+        accountFrom.getTransactions().add(transaction);
 
         if (transaction.getType().equals(TransactionType.DEPOSIT))
             accountFrom.setBalance(accountFrom.getBalance() - (transaction.getAmount() * -1 + transaction.getProvision()));
@@ -41,7 +36,7 @@ public class AccountServiceImpl implements AccountService {
             accountFrom.setBalance(accountFrom.getBalance() - (transaction.getAmount() + transaction.getProvision()));
             accountTo.setBalance(accountTo.getBalance() + transaction.getAmount());
             if (!accountFrom.getId().equals(accountTo.getId()))
-                accountTo.getTransactions().add(String.format("RECEIVED: %.2f from account: %d", transaction.getAmount(), accountFrom.getId()));
+                accountTo.getTransactions().add(transaction);
         }
 
     }

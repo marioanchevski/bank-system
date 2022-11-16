@@ -7,26 +7,31 @@ import com.mybanksystem.account.service.FindAccountService;
 import com.mybanksystem.bank.Bank;
 import com.mybanksystem.bank.BankRepository;
 import com.mybanksystem.bank.exceptions.NonExistentBankException;
+import com.mybanksystem.transaction.service.TransactionPrintingService;
 
 import java.util.stream.Collectors;
 
 public class AccountPrintingServiceImpl implements AccountPrintingService {
     private final BankRepository bankRepository;
     private final FindAccountService findAccountService;
+    private final TransactionPrintingService transactionPrintingService;
 
-    public AccountPrintingServiceImpl(BankRepository bankRepository, FindAccountService findAccountService) {
+    public AccountPrintingServiceImpl(BankRepository bankRepository, FindAccountService findAccountService, TransactionPrintingService transactionPrintingService) {
         this.bankRepository = bankRepository;
         this.findAccountService = findAccountService;
+        this.transactionPrintingService = transactionPrintingService;
     }
 
     @Override
     public void printAccountDetails(Long accountId) throws NonExistentAccountException {
         Account account = findAccountService.findAccountById(accountId).orElseThrow(() -> new NonExistentAccountException(accountId));
-        String accountInformation = String.format("Account ID: %d", account.getId()) +
-                String.format("\nBelongs to: %s", account.getName()) +
-                String.format("\nBalance: %.2f$", account.getBalance()) +
-                String.format("\nTransactions:\n%s", String.join("\n", account.getTransactions()));
-        System.out.println(accountInformation);
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(String.format("Account ID: %d", account.getId()));
+        stringBuilder.append(String.format("\nBalance: %.2f$", account.getBalance()));
+        stringBuilder.append("\nTransactions:\n");
+        account.getTransactions()
+                .forEach(transaction -> stringBuilder.append(transactionPrintingService.printTransaction(transaction.getId())));
+        System.out.println(stringBuilder);
     }
 
     @Override

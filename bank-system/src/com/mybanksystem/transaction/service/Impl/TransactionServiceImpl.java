@@ -1,8 +1,9 @@
-package com.mybanksystem.transaction;
+package com.mybanksystem.transaction.service.Impl;
 
 import com.mybanksystem.bank.Bank;
-import com.mybanksystem.bank.BankRepository;
 import com.mybanksystem.bank.service.FindBankService;
+import com.mybanksystem.transaction.*;
+import com.mybanksystem.transaction.service.TransactionService;
 
 public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;

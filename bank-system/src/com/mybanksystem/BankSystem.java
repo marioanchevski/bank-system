@@ -22,6 +22,10 @@ import com.mybanksystem.bank.exceptions.NonExistentBankException;
 import com.mybanksystem.bank.service.Impl.FindBankServiceImpl;
 import com.mybanksystem.bootstrap.DataHolder;
 import com.mybanksystem.transaction.*;
+import com.mybanksystem.transaction.service.Impl.TransactionPrintingServiceImpl;
+import com.mybanksystem.transaction.service.TransactionPrintingService;
+import com.mybanksystem.transaction.service.TransactionService;
+import com.mybanksystem.transaction.service.Impl.TransactionServiceImpl;
 import com.mybanksystem.util.ValidationUtil;
 
 import java.util.Scanner;
@@ -29,23 +33,26 @@ import java.util.Scanner;
 public class BankSystem {
 
     public static void main(String[] args) {
-        // testing purposes
         Long bankId = 100L;
         Scanner scanner = new Scanner(System.in);
         AccountRepository accountRepository = new AccountRepository();
-        FindAccountService findAccountService = new FindAccountServiceImpl(accountRepository);
         TransactionRepository transactionRepository = new TransactionRepository();
         BankRepository bankRepository = new BankRepository();
+        TransactionPrintingService transactionPrintingService = new TransactionPrintingServiceImpl(transactionRepository);
+
         DataHolder dataHolder = new DataHolder(bankRepository, accountRepository);
         dataHolder.init();
+
+        FindAccountService findAccountService = new FindAccountServiceImpl(accountRepository);
+        AccountPrintingService printAccountService = new AccountPrintingServiceImpl(bankRepository, findAccountService, transactionPrintingService);
         AccountService accountService = new AccountServiceImpl(findAccountService, transactionRepository);
-        AccountPrintingService printAccountService = new AccountPrintingServiceImpl(bankRepository, findAccountService);
+
         FindBankService findBankService = new FindBankServiceImpl(bankRepository);
-        BankService bankService = new BankServiceImpl(transactionRepository, findBankService, accountService, findAccountService);
         BankPrintingService bankPrintingService = new BankPrintingServiceImpl(findBankService);
-        TransactionService transactionService = new TransactionServiceImpl(transactionRepository, findBankService);
+        BankService bankService = new BankServiceImpl(transactionRepository, findBankService, accountService, findAccountService);
         CreateAccountService createAccountService = new CreateAccountServiceImpl(findBankService, accountRepository);
 
+        TransactionService transactionService = new TransactionServiceImpl(transactionRepository, findBankService);
         //Bank bank = init(scanner);
 
         try {

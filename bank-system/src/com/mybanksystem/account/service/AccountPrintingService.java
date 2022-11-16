@@ -6,6 +6,5 @@ import com.mybanksystem.bank.exceptions.NonExistentBankException;
 public interface AccountPrintingService {
 
     void printAccountDetails(Long accountId) throws NonExistentAccountException;
-
     void printAllAccountsInBank(Long bankId) throws NonExistentBankException;
 }
