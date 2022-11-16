@@ -1,5 +1,7 @@
 package com.mybanksystem.account;
 
+import com.mybanksystem.transaction.Transaction;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,14 +9,14 @@ public class Account {
     private Long id;
     private String name;
     private double balance;
-    private List<String> transactions;
+    private List<Transaction> transactions;
 
     public Account(String name, double balance) {
         this.id = null;
         this.name = name;
         this.balance = balance;
         transactions = new ArrayList<>();
-        transactions.add(String.format("--Account created with %.2f$--", balance));
+        // transactions.add(String.format("--Account created with %.2f$--", balance));
     }
 
     public Long getId() {
@@ -33,7 +35,7 @@ public class Account {
         return name;
     }
 
-    public List<String> getTransactions() {
+    public List<Transaction> getTransactions() {
         return transactions;
     }
 

@@ -12,7 +12,9 @@ public class TransactionRepository {
     }
 
     public void saveTransaction(Transaction transaction) {
-        transactionData.put(generateTransactionId(), transaction);
+        String transactionId = generateTransactionId();
+        transaction.setId(transactionId);
+        transactionData.put(transactionId, transaction);
     }
 
     public Transaction findTransactionById(String transactionId) {
