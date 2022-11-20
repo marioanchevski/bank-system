@@ -1,11 +1,14 @@
 package com.mybanksystem.transaction;
 
+import com.mybanksystem.account.Account;
+import com.mybanksystem.bank.Bank;
+
 public class FlatAmountProvisionTransaction extends Transaction {
     private double flatAmount;
 
-    public FlatAmountProvisionTransaction(long bankId, long fromId, long toId, double amount, String description, double flatAmount, TransactionType type) {
-        super(bankId, fromId, toId, amount, description, type);
-        this.flatAmount = flatAmount;
+    public FlatAmountProvisionTransaction(Account accountFrom, Account accountTo, Double amount, String description, TransactionType type, Bank bank) {
+        super(accountFrom, accountTo, amount, description, type, bank);
+        this.flatAmount = bank.getFlatFeeAmount();
     }
 
     @Override

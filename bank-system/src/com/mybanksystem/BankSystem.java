@@ -1,5 +1,6 @@
 package com.mybanksystem;
 
+import com.mybanksystem.account.Account;
 import com.mybanksystem.account.AccountRepository;
 import com.mybanksystem.account.service.AccountService;
 import com.mybanksystem.account.service.CreateAccountService;
@@ -39,18 +40,19 @@ public class BankSystem {
         dataHolder.init();
 
         FindAccountService findAccountService = new FindAccountServiceImpl(accountRepository);
-        AccountPrintingService printAccountService = new AccountPrintingServiceImpl(bankRepository, findAccountService, transactionPrintingService, findTransactionsForAccountService);
-        AccountService accountService = new AccountServiceImpl(findAccountService, transactionRepository);
+        AccountPrintingService printAccountService = new AccountPrintingServiceImpl(findAccountService, transactionPrintingService, findTransactionsForAccountService);
+        AccountService accountService = new AccountServiceImpl(transactionRepository);
 
         FindBankService findBankService = new FindBankServiceImpl(bankRepository);
         BankPrintingService bankPrintingService = new BankPrintingServiceImpl(findBankService);
-        BankService bankService = new BankServiceImpl(transactionRepository, findBankService, accountService, findAccountService);
+        BankService bankService = new BankServiceImpl(transactionRepository, findBankService, accountService);
         CreateAccountService createAccountService = new CreateAccountServiceImpl(findBankService, accountRepository);
         CreateBankService createBankService = new CreateBankServiceImpl(bankRepository);
         MapperService mapperService = new MapperServiceImpl();
         FindAllBanksService findAllBanksService = new FidAllBanksServiceImpl(bankRepository, mapperService);
+        FindAllAccountsInBankService findAllAccountsInBankService = new FindAllAccountsInBankServiceImpl(bankRepository);
 
-        TransactionService transactionService = new TransactionServiceImpl(transactionRepository, findBankService);
+        TransactionService transactionService = new TransactionServiceImpl(transactionRepository, findBankService, findAccountService);
 
 
         while (true) {
@@ -72,14 +74,14 @@ public class BankSystem {
                 case "3":
                     bankDTOS = findAllBanksService.findAllBanks();
                     bankDTOS.forEach(System.out::println);
-                    System.out.println("Choose a bank in which you would like to create the account in.");
                     bankId = ValidationUtil.getValidBankId(scanner);
-                    if (findBankService.findBankById(bankId).isPresent()) {
+                    try {
+                        findBankService.findBankById(bankId);
                         String name = ValidationUtil.getValidName(scanner, ValidationUtil.ACCOUNT_NAME_MSG);
                         double balance = ValidationUtil.getValidAmountInput(scanner, ValidationUtil.AMOUNT_BALANCE_MSG);
                         createAccountService.addAccountToBank(name, balance, bankId);
-                    } else {
-                        System.out.printf("The bank with id:%d does not exist.", bankId);
+                    } catch (NonExistentBankException e) {
+                        System.out.println(e.getMessage());
                     }
                     break;
                 case "4":
@@ -95,9 +97,9 @@ public class BankSystem {
 
                     bankDTOS = findAllBanksService.findAllBanks();
                     bankDTOS.forEach(System.out::println);
-                    System.out.println("Choose a bank in which you would like to perform the transaction in.");
                     bankId = ValidationUtil.getValidBankId(scanner);
-                    if (findBankService.findBankById(bankId).isPresent()) {
+                    try {
+                        findBankService.findBankById(bankId);
                         ValidationUtil.showTransactionMenu();
                         TransactionType transactionType = null;
 
@@ -139,15 +141,14 @@ public class BankSystem {
                             try {
                                 bankService.makeTransaction(transactionId, bankId);
                                 System.out.println("Transaction successful.");
-                            } catch (InsufficientFundsException | NonExistentAccountException |
+                            } catch (InsufficientFundsException |
                                      NonExistentBankException e) {
                                 System.out.println(e.getMessage());
                                 System.out.println("Transaction failed.");
                             }
                         }
-
-                    } else {
-                        System.out.printf("The bank with id:%d does not exist.", bankId);
+                    } catch (NonExistentBankException e) {
+                        System.out.println(e.getMessage());
                     }
                     break;
                 case "5":
@@ -161,7 +162,9 @@ public class BankSystem {
                     bankDTOS.forEach(System.out::println);
                     bankId = ValidationUtil.getValidBankId(scanner);
                     try {
-                        printAccountService.printAllAccountsInBank(bankId);
+                        // change here
+                        List<Account> accounts = findAllAccountsInBankService.findAll(bankId);
+                        accounts.forEach(System.out::println);
                     } catch (NonExistentBankException e) {
                         System.out.println(e.getMessage());
                     }
@@ -175,6 +178,9 @@ public class BankSystem {
                     }
                     break;
                 case "7":
+                    bankDTOS = findAllBanksService.findAllBanks();
+                    bankDTOS.forEach(System.out::println);
+                    bankId = ValidationUtil.getValidBankId(scanner);
                     try {
                         System.out.println(bankPrintingService.printBankDetails(bankId));
                     } catch (NonExistentBankException e) {
@@ -184,25 +190,24 @@ public class BankSystem {
                 case "8":
                     bankDTOS = findAllBanksService.findAllBanks();
                     bankDTOS.forEach(System.out::println);
-                    System.out.println("Choose a bank in which you would like to create the account in.");
                     bankId = ValidationUtil.getValidBankId(scanner);
-                    if (findBankService.findBankById(bankId).isPresent())
+                    try {
                         System.out.format("Total transaction fee: %10.2f$",
-                                findBankService.findBankById(bankId).get().getTotalTransactionFeeAmount());
-                    else
-                        System.out.printf("The bank with id:%d does not exist.", bankId);
+                                findBankService.findBankById(bankId).getTotalTransactionFeeAmount());
+                    } catch (NonExistentBankException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case "9":
                     bankDTOS = findAllBanksService.findAllBanks();
                     bankDTOS.forEach(System.out::println);
-                    System.out.println("Choose a bank in which you would like to create the account in.");
                     bankId = ValidationUtil.getValidBankId(scanner);
-                    if (findBankService.findBankById(bankId).isPresent())
+                    try {
                         System.out.format("Total transfer amount: %10.2f$",
-                                findBankService.findBankById(bankId).get().getTotalTransferAmount());
-                    else
-                        System.out.printf("The bank with id:%d does not exist.", bankId);
-                    break;
+                                findBankService.findBankById(bankId).getTotalTransferAmount());
+                    } catch (NonExistentBankException e) {
+                        System.out.println(e.getMessage());
+                    }
                 case "0":
                     System.out.println("Thank you for using our services.");
                     return;

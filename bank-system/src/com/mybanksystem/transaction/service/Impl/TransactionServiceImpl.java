@@ -1,5 +1,7 @@
 package com.mybanksystem.transaction.service.Impl;
 
+import com.mybanksystem.account.Account;
+import com.mybanksystem.account.service.FindAccountService;
 import com.mybanksystem.bank.Bank;
 import com.mybanksystem.bank.exceptions.NonExistentBankException;
 import com.mybanksystem.bank.service.FindBankService;
@@ -9,36 +11,39 @@ import com.mybanksystem.transaction.service.TransactionService;
 public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
     private final FindBankService findBankService;
+    private final FindAccountService findAccountService;
 
-    public TransactionServiceImpl(TransactionRepository transactionRepository, FindBankService findBankService) {
+    public TransactionServiceImpl(TransactionRepository transactionRepository, FindBankService findBankService, FindAccountService findAccountService) {
         this.transactionRepository = transactionRepository;
         this.findBankService = findBankService;
+        this.findAccountService = findAccountService;
     }
 
     @Override
-    public String createTransaction(TransactionContext context) {
-        Bank bank = findBankService.findBankById(context.getBankId()).get();
+    public String createTransaction(TransactionContext context) throws NonExistentBankException {
+        Bank bank = findBankService.findBankById(context.getBankId());
+        Account accountFrom = findAccountService.findAccountById(context.getFromId()).get();
+        Account accountTo = findAccountService.findAccountById(context.getToId()).get();
         Transaction transaction = null;
         if (context.getAmount() < bank.getThresholdAmount()) {
             transaction = new FlatAmountProvisionTransaction(
-                    context.getBankId(),
-                    context.getFromId(),
-                    context.getToId(),
+                    accountFrom,
+                    accountTo,
                     context.getAmount(),
                     "FlatAmount",
-                    bank.getFlatFeeAmount(),
-                    context.getType());
+                    context.getType(),
+                    bank
+            );
 
-        }
-        else {
+        } else {
             transaction = new FlatPercentProvisionTransaction(
-                    context.getBankId(),
-                    context.getFromId(),
-                    context.getToId(),
+                    accountFrom,
+                    accountTo,
                     context.getAmount(),
                     "FlatPercent",
-                    bank.getPercentFeeAmount(),
-                    context.getType());
+                    context.getType(),
+                    bank
+            );
         }
         transactionRepository.saveTransaction(transaction);
         return transaction.getId();

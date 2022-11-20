@@ -15,8 +15,7 @@ public class BankPrintingServiceImpl implements BankPrintingService {
 
     @Override
     public String printBankDetails(Long bankId) throws NonExistentBankException {
-        Bank bank = findBankService.findBankById(bankId)
-                .orElseThrow(()-> new NonExistentBankException(bankId));
+        Bank bank = findBankService.findBankById(bankId);
         return String.format("Bank: %s\nFlatFee: %.2f$ \nPercentFee: %d%%\nThresholdAmount: %.2f$\n",
                 bank.getName(), bank.getFlatFeeAmount(), bank.getPercentFeeAmount(), bank.getThresholdAmount());
     }

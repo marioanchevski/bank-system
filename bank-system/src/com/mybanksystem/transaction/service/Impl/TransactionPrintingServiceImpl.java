@@ -17,16 +17,16 @@ public class TransactionPrintingServiceImpl implements TransactionPrintingServic
         Transaction transaction = transactionRepository.findTransactionById(transactionId);
         if (transaction.getType().equals(TransactionType.NORMAL))
             return String.format("Sent:%.2f$, from:%d to:%d, account:%d paid: %s\n",
-                transaction.getAmount(),
-                transaction.getFromId(),
-                transaction.getToId(),
-                transaction.getFromId(),
-                transaction.getDescription());
+                    transaction.getAmount(),
+                    transaction.getAccountFrom().getId(),
+                    transaction.getAccountTo().getId(),
+                    transaction.getAccountFrom().getId(),
+                    transaction.getDescription());
         else
             return String.format("%s: %.2f$, account:%d, paid %s\n",
                     transaction.getType(),
                     transaction.getAmount(),
-                    transaction.getFromId(),
+                    transaction.getAccountFrom().getId(),
                     transaction.getDescription());
     }
 }

@@ -18,7 +18,8 @@ public class FindTransactionsForAccountServiceImpl implements FindTransactionsFo
     public List<Transaction> findAllTransactionsForAccount(Long accountId) {
         return transactionRepository.getAllTransactions()
                 .stream()
-                .filter(transaction -> transaction.getFromId() == accountId || transaction.getToId() == accountId)
+                .filter(transaction -> transaction.getAccountFrom().getId().equals(accountId) ||
+                        transaction.getAccountTo().getId().equals(accountId))
                 .collect(Collectors.toList());
     }
 }
