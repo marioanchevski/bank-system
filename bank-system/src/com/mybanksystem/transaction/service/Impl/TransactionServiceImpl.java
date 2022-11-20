@@ -16,8 +16,8 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public String createTransaction(TransactionContext context) {
-        Bank bank = findBankService.findBankById(context.getBankId()).get();
+    public String createTransaction(TransactionContext context) throws NonExistentBankException {
+        Bank bank = findBankService.findBankById(context.getBankId());
         Transaction transaction = null;
         if (context.getAmount() < bank.getThresholdAmount()) {
             transaction = new FlatAmountProvisionTransaction(

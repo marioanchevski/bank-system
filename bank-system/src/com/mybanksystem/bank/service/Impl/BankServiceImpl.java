@@ -28,8 +28,7 @@ public class BankServiceImpl implements BankService {
 
     @Override
     public void makeTransaction(String transactionId, Long bankId) throws InsufficientFundsException, NonExistentAccountException, NonExistentBankException {
-        Bank bank = findBankService.findBankById(bankId)
-                .orElseThrow(() -> new NonExistentBankException(bankId));
+        Bank bank = findBankService.findBankById(bankId);
         Transaction transaction = transactionRepository.findTransactionById(transactionId);
         Account fromAccount = findAccountService.findAccountById(transaction.getFromId())
                 .orElseThrow(() -> new NonExistentAccountException(transaction.getFromId()));

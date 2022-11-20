@@ -14,7 +14,8 @@ public class FindBankServiceImpl implements FindBankService {
         this.bankRepository = bankRepository;
     }
     @Override
-    public Optional<Bank> findBankById(Long bankId) {
-        return bankRepository.findBankById(bankId);
+    public Bank findBankById(Long bankId) throws NonExistentBankException {
+        return bankRepository.findBankById(bankId)
+                .orElseThrow(()-> new NonExistentBankException(bankId));
     }
 }

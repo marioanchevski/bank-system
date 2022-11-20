@@ -72,14 +72,14 @@ public class BankSystem {
                 case "3":
                     bankDTOS = findAllBanksService.findAllBanks();
                     bankDTOS.forEach(System.out::println);
-                    System.out.println("Choose a bank in which you would like to create the account in.");
                     bankId = ValidationUtil.getValidBankId(scanner);
-                    if (findBankService.findBankById(bankId).isPresent()) {
+                    try {
+                        findBankService.findBankById(bankId);
                         String name = ValidationUtil.getValidName(scanner, ValidationUtil.ACCOUNT_NAME_MSG);
                         double balance = ValidationUtil.getValidAmountInput(scanner, ValidationUtil.AMOUNT_BALANCE_MSG);
                         createAccountService.addAccountToBank(name, balance, bankId);
-                    } else {
-                        System.out.printf("The bank with id:%d does not exist.", bankId);
+                    } catch (NonExistentBankException e) {
+                        System.out.println(e.getMessage());
                     }
                     break;
                 case "4":
@@ -95,9 +95,9 @@ public class BankSystem {
 
                     bankDTOS = findAllBanksService.findAllBanks();
                     bankDTOS.forEach(System.out::println);
-                    System.out.println("Choose a bank in which you would like to perform the transaction in.");
                     bankId = ValidationUtil.getValidBankId(scanner);
-                    if (findBankService.findBankById(bankId).isPresent()) {
+                    try {
+                        findBankService.findBankById(bankId);
                         ValidationUtil.showTransactionMenu();
                         TransactionType transactionType = null;
 
@@ -145,9 +145,8 @@ public class BankSystem {
                                 System.out.println("Transaction failed.");
                             }
                         }
-
-                    } else {
-                        System.out.printf("The bank with id:%d does not exist.", bankId);
+                    } catch (NonExistentBankException e) {
+                        System.out.println(e.getMessage());
                     }
                     break;
                 case "5":
@@ -175,6 +174,9 @@ public class BankSystem {
                     }
                     break;
                 case "7":
+                    bankDTOS = findAllBanksService.findAllBanks();
+                    bankDTOS.forEach(System.out::println);
+                    bankId = ValidationUtil.getValidBankId(scanner);
                     try {
                         System.out.println(bankPrintingService.printBankDetails(bankId));
                     } catch (NonExistentBankException e) {
@@ -184,25 +186,24 @@ public class BankSystem {
                 case "8":
                     bankDTOS = findAllBanksService.findAllBanks();
                     bankDTOS.forEach(System.out::println);
-                    System.out.println("Choose a bank in which you would like to create the account in.");
                     bankId = ValidationUtil.getValidBankId(scanner);
-                    if (findBankService.findBankById(bankId).isPresent())
+                    try {
                         System.out.format("Total transaction fee: %10.2f$",
-                                findBankService.findBankById(bankId).get().getTotalTransactionFeeAmount());
-                    else
-                        System.out.printf("The bank with id:%d does not exist.", bankId);
+                                findBankService.findBankById(bankId).getTotalTransactionFeeAmount());
+                    } catch (NonExistentBankException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case "9":
                     bankDTOS = findAllBanksService.findAllBanks();
                     bankDTOS.forEach(System.out::println);
-                    System.out.println("Choose a bank in which you would like to create the account in.");
                     bankId = ValidationUtil.getValidBankId(scanner);
-                    if (findBankService.findBankById(bankId).isPresent())
+                    try {
                         System.out.format("Total transfer amount: %10.2f$",
-                                findBankService.findBankById(bankId).get().getTotalTransferAmount());
-                    else
-                        System.out.printf("The bank with id:%d does not exist.", bankId);
-                    break;
+                                findBankService.findBankById(bankId).getTotalTransferAmount());
+                    } catch (NonExistentBankException e) {
+                        System.out.println(e.getMessage());
+                    }
                 case "0":
                     System.out.println("Thank you for using our services.");
                     return;
