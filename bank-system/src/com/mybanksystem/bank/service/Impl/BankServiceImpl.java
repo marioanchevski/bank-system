@@ -1,6 +1,5 @@
 package com.mybanksystem.bank.service.Impl;
 
-import com.mybanksystem.account.AccountRepository;
 import com.mybanksystem.account.service.AccountService;
 import com.mybanksystem.account.exceptions.ZeroAmountException;
 import com.mybanksystem.account.service.FindAccountService;
@@ -55,6 +54,8 @@ public class BankServiceImpl implements BankService {
         accountService.updateAccounts(transactionId);
         bank.setTotalTransferAmount(bank.getTotalTransferAmount() + transaction.getAmount());
         bank.setTotalTransactionFeeAmount(bank.getTotalTransactionFeeAmount() + transaction.getProvision());
+        bank.getBankTransactions().add(transaction);
+
     }
 
 

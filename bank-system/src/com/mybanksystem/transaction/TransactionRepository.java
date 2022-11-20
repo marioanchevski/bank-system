@@ -1,8 +1,6 @@
 package com.mybanksystem.transaction;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class TransactionRepository {
     private Map<String, Transaction> transactionData;
@@ -23,5 +21,9 @@ public class TransactionRepository {
 
     private String generateTransactionId() {
         return UUID.randomUUID().toString();
+    }
+
+    public List<Transaction> getAllTransactions(){
+        return new ArrayList<>(transactionData.values());
     }
 }

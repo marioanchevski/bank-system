@@ -25,18 +25,14 @@ public class AccountServiceImpl implements AccountService {
         Account accountTo = findAccountService.findAccountById(transaction.getToId())
                 .orElseThrow(()-> new NonExistentAccountException(transaction.getToId()));
 
-        accountFrom.getTransactions().add(transaction);
 
         if (transaction.getType().equals(TransactionType.DEPOSIT))
             accountFrom.setBalance(accountFrom.getBalance() - (transaction.getAmount() * -1 + transaction.getProvision()));
         else if (transaction.getType().equals(TransactionType.WITHDRAW))
             accountFrom.setBalance(accountFrom.getBalance() - (transaction.getAmount() + transaction.getProvision()));
         else {
-
             accountFrom.setBalance(accountFrom.getBalance() - (transaction.getAmount() + transaction.getProvision()));
             accountTo.setBalance(accountTo.getBalance() + transaction.getAmount());
-            if (!accountFrom.getId().equals(accountTo.getId()))
-                accountTo.getTransactions().add(transaction);
         }
 
     }

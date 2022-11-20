@@ -1,6 +1,7 @@
 package com.mybanksystem.transaction.service.Impl;
 
 import com.mybanksystem.bank.Bank;
+import com.mybanksystem.bank.exceptions.NonExistentBankException;
 import com.mybanksystem.bank.service.FindBankService;
 import com.mybanksystem.transaction.*;
 import com.mybanksystem.transaction.service.TransactionService;

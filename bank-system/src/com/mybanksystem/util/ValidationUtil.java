@@ -1,6 +1,8 @@
 package com.mybanksystem.util;
 
 import com.mybanksystem.bank.Bank;
+import com.mybanksystem.bank.service.FindBankService;
+import com.mybanksystem.bank.service.Impl.FindBankServiceImpl;
 import com.mybanksystem.transaction.FlatAmountProvisionTransaction;
 import com.mybanksystem.transaction.FlatPercentProvisionTransaction;
 import com.mybanksystem.transaction.Transaction;
@@ -14,10 +16,13 @@ public class ValidationUtil {
     public final static int FLAT_AMOUNT_MSG = 2;
     public final static int FLAT_PERCENT_MSG = 3;
 
+    public final static int ACCOUNT_NAME_MSG = 0;
+    public final static int BANK_NAME_MSG = 1;
+
     public static void showMenu() {
         System.out.println("\n=============MAIN MENU==============");
-        System.out.println("1.Create a new account\n2.Make a new transaction\n3.See list of account's\n4.Check account details\n5.Check bank details" +
-                "\n6.Check total transaction fee amount\n7.Check total bank transfer amount\n8.Exit");
+        System.out.println("1.Create a new bank\n2.See list of bank's\n3.Create a new account\n4.Make a new transaction\n5.See list of account's\n6.Check account details\n7.Check bank details" +
+                "\n8.Check total transaction fee amount\n9.Check total bank transfer amount\n0.Exit");
         System.out.println("====================================\n");
     }
 
@@ -48,19 +53,33 @@ public class ValidationUtil {
         return Double.parseDouble(balanceCheck.substring(0, balanceCheck.length() - 1));
     }
 
-    public static long getValidAccountId(Scanner scanner) {
+
+    public static long getValidBankId(Scanner scanner) {
         String numberRegex = "[0-9]+";
-        System.out.println("Enter the account id you wish to perform the transaction on.");
+        System.out.println("Please enter the bank Id number.");
         String idFrom = scanner.nextLine().trim();
         while (!idFrom.matches(numberRegex)) {
-            System.out.println("The account id must be a number. Plese try again.");
+            System.out.println("The bank id must be a number. Please try again.");
             idFrom = scanner.nextLine().trim();
         }
         return Long.parseLong(idFrom);
     }
 
-    public static String getValidName(Scanner scanner) {
-        System.out.println("Enter account owner.");
+    public static long getValidAccountId(Scanner scanner) {
+        String numberRegex = "[0-9]+";
+        System.out.println("Enter the account id you wish to perform the transaction on.");
+        String idFrom = scanner.nextLine().trim();
+        while (!idFrom.matches(numberRegex)) {
+            System.out.println("The account id must be a number. Please try again.");
+            idFrom = scanner.nextLine().trim();
+        }
+        return Long.parseLong(idFrom);
+    }
+
+    public static String getValidName(Scanner scanner, int msgtype) {
+        String[] promptMsg = {"Enter account owner",
+                "Enter bank name."};
+        System.out.println(promptMsg[msgtype]);
         String name = scanner.nextLine();
         while (name.trim().isEmpty()) {
             System.out.println("You must provide a name.");
@@ -86,7 +105,7 @@ public class ValidationUtil {
 
     public static Bank init(Scanner scanner) {
         System.out.println("\nPlease enter a name for your bank.");
-        String bankName = getValidName(scanner);
+        String bankName = getValidName(scanner, BANK_NAME_MSG);
         double flatFee = getValidAmountInput(scanner, FLAT_AMOUNT_MSG);
         int percentFee = getValidFlatPercent(scanner);
         double thresholdAmount = getValidAmountInput(scanner, FLAT_PERCENT_MSG);

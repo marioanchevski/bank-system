@@ -17,9 +17,8 @@ public class CreateAccountServiceImpl implements CreateAccountService {
     }
 
     @Override
-    public void addAccountToBank(String name, Double balance, Long bankId) throws NonExistentBankException {
-        Bank bank = findBankService.findBankById(bankId)
-                .orElseThrow(()-> new NonExistentBankException(bankId));
+    public void addAccountToBank(String name, Double balance, Long bankId){
+        Bank bank = findBankService.findBankById(bankId).get();
         Account account  = new Account(name, balance);
         accountRepository.saveAccount(account);
         bank.getAccounts().add(account);

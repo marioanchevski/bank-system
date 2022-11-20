@@ -2,6 +2,7 @@ package com.mybanksystem.bank.service.Impl;
 
 import com.mybanksystem.bank.Bank;
 import com.mybanksystem.bank.BankRepository;
+import com.mybanksystem.bank.exceptions.NonExistentBankException;
 import com.mybanksystem.bank.service.FindBankService;
 
 import java.util.Optional;

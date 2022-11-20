@@ -7,13 +7,7 @@ public class AccountRepository {
     private Map<Long, Account> accountData;
 
     public AccountRepository() {
-        Account a1 = new Account("Mario", 5.00);
-        Account a2 = new Account("Vojo", 1000.00);
-        Account a3 = new Account("Filip and Ata", 5000.50);
         accountData = new HashMap<>();
-        saveAccount(a1);
-        saveAccount(a2);
-        saveAccount(a3);
     }
 
     public void saveAccount(Account account) {
@@ -33,7 +27,4 @@ public class AccountRepository {
         return idSeed++;
     }
 
-    public List<Account> getAllAccount() {
-        return new ArrayList<>(accountData.values());
-    }
 }
