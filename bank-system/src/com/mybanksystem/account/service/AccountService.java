@@ -4,6 +4,6 @@ import com.mybanksystem.account.exceptions.NonExistentAccountException;
 
 
 public interface AccountService {
-    void updateAccounts(String transactionId) throws NonExistentAccountException;
+    void updateAccounts(String transactionId);
 
 }

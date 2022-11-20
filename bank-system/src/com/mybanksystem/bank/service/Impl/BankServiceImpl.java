@@ -30,8 +30,7 @@ public class BankServiceImpl implements BankService {
     public void makeTransaction(String transactionId, Long bankId) throws InsufficientFundsException, NonExistentAccountException, NonExistentBankException {
         Bank bank = findBankService.findBankById(bankId);
         Transaction transaction = transactionRepository.findTransactionById(transactionId);
-        Account fromAccount = findAccountService.findAccountById(transaction.getFromId())
-                .orElseThrow(() -> new NonExistentAccountException(transaction.getFromId()));
+        Account fromAccount = transaction.getAccountFrom();
 
         double totalTransferAmount = transaction.getAmount() + transaction.getProvision();
 

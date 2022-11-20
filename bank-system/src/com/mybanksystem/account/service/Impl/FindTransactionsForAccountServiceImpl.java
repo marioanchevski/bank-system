@@ -5,6 +5,7 @@ import com.mybanksystem.transaction.Transaction;
 import com.mybanksystem.transaction.TransactionRepository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class FindTransactionsForAccountServiceImpl implements FindTransactionsForAccountService {
@@ -18,7 +19,8 @@ public class FindTransactionsForAccountServiceImpl implements FindTransactionsFo
     public List<Transaction> findAllTransactionsForAccount(Long accountId) {
         return transactionRepository.getAllTransactions()
                 .stream()
-                .filter(transaction -> transaction.getFromId() == accountId || transaction.getToId() == accountId)
+                .filter(transaction -> transaction.getAccountFrom().getId().equals(accountId) ||
+                        transaction.getAccountTo().getId().equals(accountId))
                 .collect(Collectors.toList());
     }
 }

@@ -40,7 +40,7 @@ public class BankSystem {
 
         FindAccountService findAccountService = new FindAccountServiceImpl(accountRepository);
         AccountPrintingService printAccountService = new AccountPrintingServiceImpl(bankRepository, findAccountService, transactionPrintingService, findTransactionsForAccountService);
-        AccountService accountService = new AccountServiceImpl(findAccountService, transactionRepository);
+        AccountService accountService = new AccountServiceImpl(transactionRepository);
 
         FindBankService findBankService = new FindBankServiceImpl(bankRepository);
         BankPrintingService bankPrintingService = new BankPrintingServiceImpl(findBankService);
@@ -50,7 +50,7 @@ public class BankSystem {
         MapperService mapperService = new MapperServiceImpl();
         FindAllBanksService findAllBanksService = new FidAllBanksServiceImpl(bankRepository, mapperService);
 
-        TransactionService transactionService = new TransactionServiceImpl(transactionRepository, findBankService);
+        TransactionService transactionService = new TransactionServiceImpl(transactionRepository, findBankService, findAccountService);
 
 
         while (true) {

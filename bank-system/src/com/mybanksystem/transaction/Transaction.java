@@ -1,30 +1,33 @@
 package com.mybanksystem.transaction;
 
+import com.mybanksystem.account.Account;
+import com.mybanksystem.bank.Bank;
+
 public abstract class Transaction {
     private String id;
-    private long fromId;
-    private long toId;
-    private double amount;
+    private Account accountFrom;
+    private Account accountTo;
+    private Double amount;
     private String description;
     private TransactionType type;
-    private long bankId;
+    private Bank bank;
 
-    public Transaction(long bankId, long fromId, long toId, double amount, String description, TransactionType type) {
-        id = null;
-        this.bankId = bankId;
-        this.fromId = fromId;
-        this.toId = toId;
+    public Transaction(Account accountFrom, Account accountTo, Double amount, String description, TransactionType type, Bank bank) {
+        this.id = null;
+        this.accountFrom = accountFrom;
+        this.accountTo = accountTo;
         this.amount = amount;
         this.description = description;
         this.type = type;
+        this.bank = bank;
     }
 
-    public long getFromId() {
-        return fromId;
+    public Account getAccountFrom() {
+        return accountFrom;
     }
 
-    public long getToId() {
-        return toId;
+    public Account getAccountTo() {
+        return accountTo;
     }
 
     public double getAmount() {
