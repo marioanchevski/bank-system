@@ -5,7 +5,6 @@ import com.mybanksystem.transaction.Transaction;
 import com.mybanksystem.transaction.TransactionRepository;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class FindTransactionsForAccountServiceImpl implements FindTransactionsForAccountService {

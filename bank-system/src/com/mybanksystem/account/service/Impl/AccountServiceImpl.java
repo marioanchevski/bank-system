@@ -1,9 +1,7 @@
 package com.mybanksystem.account.service.Impl;
 
 import com.mybanksystem.account.Account;
-import com.mybanksystem.account.exceptions.NonExistentAccountException;
 import com.mybanksystem.account.service.AccountService;
-import com.mybanksystem.account.service.FindAccountService;
 import com.mybanksystem.transaction.Transaction;
 import com.mybanksystem.transaction.TransactionRepository;
 import com.mybanksystem.transaction.TransactionType;
@@ -20,7 +18,6 @@ public class AccountServiceImpl implements AccountService {
         Transaction transaction = transactionRepository.findTransactionById(transactionId);
         Account accountFrom = transaction.getAccountFrom();
         Account accountTo = transaction.getAccountTo();
-
 
         if (transaction.getType().equals(TransactionType.DEPOSIT))
             accountFrom.setBalance(accountFrom.getBalance() - (transaction.getAmount() * -1 + transaction.getProvision()));

@@ -22,7 +22,7 @@ public class FidAllBanksServiceImpl implements FindAllBanksService {
     public List<BankDTO> findAllBanks() {
         List<Bank> banks = bankRepository.findAll();
         List<BankDTO> bankDTOs = banks.stream()
-                .map(bank-> mapperService.map(bank))
+                .map(bank -> mapperService.map(bank))
                 .collect(Collectors.toList());
 
         return bankDTOs;

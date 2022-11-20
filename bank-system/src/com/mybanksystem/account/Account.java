@@ -30,4 +30,9 @@ public class Account {
     public void setId(Long id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return String.format("AccountID: %d\tAccount owner: %-15s\tCurrent balance: %10.2f$", getId(), getName(), getBalance());
+    }
 }

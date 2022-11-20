@@ -1,12 +1,6 @@
 package com.mybanksystem.util;
 
 import com.mybanksystem.bank.Bank;
-import com.mybanksystem.bank.service.FindBankService;
-import com.mybanksystem.bank.service.Impl.FindBankServiceImpl;
-import com.mybanksystem.transaction.FlatAmountProvisionTransaction;
-import com.mybanksystem.transaction.FlatPercentProvisionTransaction;
-import com.mybanksystem.transaction.Transaction;
-import com.mybanksystem.transaction.TransactionType;
 
 import java.util.Scanner;
 

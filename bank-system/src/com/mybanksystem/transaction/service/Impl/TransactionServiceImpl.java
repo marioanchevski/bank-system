@@ -35,8 +35,7 @@ public class TransactionServiceImpl implements TransactionService {
                     bank
             );
 
-        }
-        else {
+        } else {
             transaction = new FlatPercentProvisionTransaction(
                     accountFrom,
                     accountTo,

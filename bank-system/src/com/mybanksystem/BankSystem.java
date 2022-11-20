@@ -1,5 +1,6 @@
 package com.mybanksystem;
 
+import com.mybanksystem.account.Account;
 import com.mybanksystem.account.AccountRepository;
 import com.mybanksystem.account.service.AccountService;
 import com.mybanksystem.account.service.CreateAccountService;
@@ -39,16 +40,17 @@ public class BankSystem {
         dataHolder.init();
 
         FindAccountService findAccountService = new FindAccountServiceImpl(accountRepository);
-        AccountPrintingService printAccountService = new AccountPrintingServiceImpl(bankRepository, findAccountService, transactionPrintingService, findTransactionsForAccountService);
+        AccountPrintingService printAccountService = new AccountPrintingServiceImpl(findAccountService, transactionPrintingService, findTransactionsForAccountService);
         AccountService accountService = new AccountServiceImpl(transactionRepository);
 
         FindBankService findBankService = new FindBankServiceImpl(bankRepository);
         BankPrintingService bankPrintingService = new BankPrintingServiceImpl(findBankService);
-        BankService bankService = new BankServiceImpl(transactionRepository, findBankService, accountService, findAccountService);
+        BankService bankService = new BankServiceImpl(transactionRepository, findBankService, accountService);
         CreateAccountService createAccountService = new CreateAccountServiceImpl(findBankService, accountRepository);
         CreateBankService createBankService = new CreateBankServiceImpl(bankRepository);
         MapperService mapperService = new MapperServiceImpl();
         FindAllBanksService findAllBanksService = new FidAllBanksServiceImpl(bankRepository, mapperService);
+        FindAllAccountsInBankService findAllAccountsInBankService = new FindAllAccountsInBankServiceImpl(bankRepository);
 
         TransactionService transactionService = new TransactionServiceImpl(transactionRepository, findBankService, findAccountService);
 
@@ -139,7 +141,7 @@ public class BankSystem {
                             try {
                                 bankService.makeTransaction(transactionId, bankId);
                                 System.out.println("Transaction successful.");
-                            } catch (InsufficientFundsException | NonExistentAccountException |
+                            } catch (InsufficientFundsException |
                                      NonExistentBankException e) {
                                 System.out.println(e.getMessage());
                                 System.out.println("Transaction failed.");
@@ -160,7 +162,9 @@ public class BankSystem {
                     bankDTOS.forEach(System.out::println);
                     bankId = ValidationUtil.getValidBankId(scanner);
                     try {
-                        printAccountService.printAllAccountsInBank(bankId);
+                        // change here
+                        List<Account> accounts = findAllAccountsInBankService.findAll(bankId);
+                        accounts.forEach(System.out::println);
                     } catch (NonExistentBankException e) {
                         System.out.println(e.getMessage());
                     }
