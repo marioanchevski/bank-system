@@ -1,9 +1,7 @@
 package com.mybanksystem.bank;
 
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class BankRepository {
     private static Long idSeed = 100L;
@@ -11,7 +9,6 @@ public class BankRepository {
 
     public BankRepository() {
         bankData = new HashMap<>();
-        saveBank(new Bank("LinkPlus-Bank", 10.00, 2, 10000.00));
     }
 
     public void saveBank(Bank bank) {
@@ -27,5 +24,9 @@ public class BankRepository {
 
     private Long generateBankId() {
         return idSeed++;
+    }
+
+    public List<Bank> findAll() {
+        return new ArrayList<>(bankData.values());
     }
 }
