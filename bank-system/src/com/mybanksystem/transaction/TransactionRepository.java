@@ -1,8 +1,10 @@
 package com.mybanksystem.transaction;
 
+import com.mybanksystem.util.Bean;
+
 import java.util.*;
 
-public class TransactionRepository {
+public class TransactionRepository implements Bean {
     private Map<String, Transaction> transactionData;
 
     public TransactionRepository() {

@@ -1,17 +1,21 @@
 package com.mybanksystem.util;
 
-import com.mybanksystem.bank.Bank;
+import com.mybanksystem.transaction.TransactionType;
 
 import java.util.Scanner;
 
 public class ValidationUtil {
+    static Scanner scanner = new Scanner(System.in);
     public final static int AMOUNT_BALANCE_MSG = 0;
     public final static int TRANSACTION_AMOUNT_MSG = 1;
     public final static int FLAT_AMOUNT_MSG = 2;
     public final static int FLAT_PERCENT_MSG = 3;
-
     public final static int ACCOUNT_NAME_MSG = 0;
     public final static int BANK_NAME_MSG = 1;
+    public final static String CORRECT_AMOUNT_FORMAT_REGEX = "[0-9]+.[0-9]{2}\\$";
+    public final static String CORRECT_ID_NUMBER_FORMAT_REGEX = "[0-9]+";
+    public final static String CORRECT_FLAT_PERCENT_FORMAT_REGEX = "^[0-9]{1,2}$";
+
 
     public static void showMenu() {
         System.out.println("\n=============MAIN MENU==============");
@@ -27,7 +31,7 @@ public class ValidationUtil {
     }
 
 
-    public static double getValidAmountInput(Scanner scanner, int msgtype) {
+    public static double userInputAmountInCorrectFormat(int msgType) {
         String[] promptMsg = {"Enter account balance.",
                 "Enter amount.",
                 "Enter flat fee amount.",
@@ -36,11 +40,10 @@ public class ValidationUtil {
                 "Enter the amount with two decimal places and a dollar sign at the end. Example 9.50$",
                 "Enter the flat fee amount with two decimal places and a dollar sign at the end. Example 7.50$",
                 "Enter threshold amount with two decimal places and a dollar sign at the end. Example 10000.00$"};
-        String correctAmountFormatRegex = "[0-9]+.[0-9]{2}\\$";
-        System.out.println(promptMsg[msgtype]);
+        System.out.println(promptMsg[msgType]);
         String balanceCheck = scanner.nextLine().trim();
-        while (!balanceCheck.matches(correctAmountFormatRegex)) {
-            System.out.println(errMsgs[msgtype]);
+        while (!balanceCheck.matches(CORRECT_AMOUNT_FORMAT_REGEX)) {
+            System.out.println(errMsgs[msgType]);
             balanceCheck = scanner.nextLine().trim();
         }
         balanceCheck = balanceCheck.replace(",", ".");
@@ -48,32 +51,27 @@ public class ValidationUtil {
     }
 
 
-    public static long getValidBankId(Scanner scanner) {
-        String numberRegex = "[0-9]+";
-        System.out.println("Please enter the bank Id number.");
+    public static long userInputIdNumberInCorrectFormat(int msgType) {
+        String[] promptMsg = {"Please enter the bank Id number.",
+                "Enter the account Id you wish to perform the transaction on."};
+        String[] errMsgs = {
+                "The bank id must be a number. Please try again.",
+                "The account id must be a number. Please try again."
+        };
+        System.out.println(promptMsg[msgType]);
         String idFrom = scanner.nextLine().trim();
-        while (!idFrom.matches(numberRegex)) {
-            System.out.println("The bank id must be a number. Please try again.");
+        while (!idFrom.matches(CORRECT_ID_NUMBER_FORMAT_REGEX)) {
+            System.out.println(errMsgs[msgType]);
             idFrom = scanner.nextLine().trim();
         }
         return Long.parseLong(idFrom);
     }
 
-    public static long getValidAccountId(Scanner scanner) {
-        String numberRegex = "[0-9]+";
-        System.out.println("Enter the account id you wish to perform the transaction on.");
-        String idFrom = scanner.nextLine().trim();
-        while (!idFrom.matches(numberRegex)) {
-            System.out.println("The account id must be a number. Please try again.");
-            idFrom = scanner.nextLine().trim();
-        }
-        return Long.parseLong(idFrom);
-    }
 
-    public static String getValidName(Scanner scanner, int msgtype) {
-        String[] promptMsg = {"Enter account owner",
+    public static String userInputNonBlankName(int msgType) {
+        String[] promptMsg = {"Enter account owner.",
                 "Enter bank name."};
-        System.out.println(promptMsg[msgtype]);
+        System.out.println(promptMsg[msgType]);
         String name = scanner.nextLine();
         while (name.trim().isEmpty()) {
             System.out.println("You must provide a name.");
@@ -82,27 +80,29 @@ public class ValidationUtil {
         return name;
     }
 
-    public static void bankHasNoAccounts() {
-        System.out.println("Currently there are no accounts in this bank.\nPlease create a new account.\n");
-    }
-
-    public static int getValidFlatPercent(Scanner scanner) {
-        String flatPercentRegex = "^[0-9]{1,2}$";
+    public static int userInputFlatPercentInCorrectFormat() {
         System.out.println("Please enter a flat percent amount for your bank.");
         String line = scanner.nextLine();
-        while (!line.matches(flatPercentRegex)) {
+        while (!line.matches(CORRECT_FLAT_PERCENT_FORMAT_REGEX)) {
             System.out.println("Flat fee must be whole number. Not greater than 99.");
             line = scanner.nextLine().trim();
         }
         return Integer.parseInt(line);
     }
 
-    public static Bank init(Scanner scanner) {
-        System.out.println("\nPlease enter a name for your bank.");
-        String bankName = getValidName(scanner, BANK_NAME_MSG);
-        double flatFee = getValidAmountInput(scanner, FLAT_AMOUNT_MSG);
-        int percentFee = getValidFlatPercent(scanner);
-        double thresholdAmount = getValidAmountInput(scanner, FLAT_PERCENT_MSG);
-        return new Bank(bankName, flatFee, percentFee, thresholdAmount);
+    public static TransactionType transactionMenuDecision() {
+
+        String transactionMenuDecision = scanner.nextLine().trim();
+        switch (UserInputMapper.mapUserInputToTransactionMenuOption(transactionMenuDecision)) {
+            case WITHDRAW:
+                return TransactionType.WITHDRAW;
+            case DEPOSIT:
+                return TransactionType.DEPOSIT;
+            case NORMAL:
+                return TransactionType.NORMAL;
+            default:
+                return null;
+        }
     }
+
 }

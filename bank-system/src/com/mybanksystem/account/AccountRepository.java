@@ -1,8 +1,10 @@
 package com.mybanksystem.account;
 
+import com.mybanksystem.util.Bean;
+
 import java.util.*;
 
-public class AccountRepository {
+public class AccountRepository implements Bean {
     private static Long idSeed = 10000L;
     private Map<Long, Account> accountData;
 
@@ -17,10 +19,7 @@ public class AccountRepository {
     }
 
     public Optional<Account> findAccountById(Long accountId) {
-        if (accountData.get(accountId) == null)
-            return Optional.empty();
-        else
-            return Optional.of(accountData.get(accountId));
+        return Optional.ofNullable(accountData.get(accountId));
     }
 
     private Long generateAccountId() {

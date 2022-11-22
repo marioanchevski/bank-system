@@ -1,5 +1,7 @@
 package com.mybanksystem.transaction.service;
 
-public interface TransactionPrintingService {
+import com.mybanksystem.util.Bean;
+
+public interface TransactionPrintingService extends Bean {
     String printTransaction(String transactionId);
 }

@@ -12,7 +12,6 @@ public class BankPrintingServiceImpl implements BankPrintingService {
         this.findBankService = findBankService;
     }
 
-
     @Override
     public String printBankDetails(Long bankId) throws NonExistentBankException {
         Bank bank = findBankService.findBankById(bankId);

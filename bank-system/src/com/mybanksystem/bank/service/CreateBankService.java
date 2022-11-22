@@ -1,5 +1,7 @@
 package com.mybanksystem.bank.service;
 
-public interface CreateBankService {
+import com.mybanksystem.util.Bean;
+
+public interface CreateBankService extends Bean {
     void createNewBank(String name, Double thresholdAmount, Double flatFeeAmount, Integer percentFeeAmount);
 }
