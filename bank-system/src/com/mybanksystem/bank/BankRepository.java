@@ -1,9 +1,11 @@
 package com.mybanksystem.bank;
 
 
+import com.mybanksystem.util.Bean;
+
 import java.util.*;
 
-public class BankRepository {
+public class BankRepository implements Bean{
     private static Long idSeed = 100L;
     private Map<Long, Bank> bankData;
 
@@ -17,9 +19,7 @@ public class BankRepository {
         bankData.put(bankId, bank);
     }
     public Optional<Bank> findBankById(Long bankId){
-       if (bankData.get(bankId) == null)
-           return Optional.empty();
-       return Optional.of(bankData.get(bankId));
+        return Optional.ofNullable(bankData.get(bankId));
     }
 
     private Long generateBankId() {

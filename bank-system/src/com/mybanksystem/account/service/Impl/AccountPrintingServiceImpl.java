@@ -32,10 +32,10 @@ public class AccountPrintingServiceImpl implements AccountPrintingService {
         List<Transaction> transactionList = findTransactionsForAccountService.findAllTransactionsForAccount(accountId);
 
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(String.format("Account ID: %d", account.getId()));
-        stringBuilder.append(String.format("Owner: %s", account.getName()));
-        stringBuilder.append(String.format("\nBalance: %.2f$", account.getBalance()));
-        stringBuilder.append("\nTransactions:\n");
+        stringBuilder.append(String.format("Account ID: %d\n", account.getId()));
+        stringBuilder.append(String.format("Owner: %s\n", account.getName()));
+        stringBuilder.append(String.format("Balance: %.2f$\n", account.getBalance()));
+        stringBuilder.append("Transactions:\n");
         transactionList.forEach(transaction -> stringBuilder.append(transactionPrintingService.printTransaction(transaction.getId())));
         System.out.println(stringBuilder);
     }

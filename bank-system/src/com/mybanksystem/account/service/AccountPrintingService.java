@@ -1,9 +1,9 @@
 package com.mybanksystem.account.service;
 
+import com.mybanksystem.util.Bean;
 import com.mybanksystem.account.exceptions.NonExistentAccountException;
-import com.mybanksystem.bank.exceptions.NonExistentBankException;
 
-public interface AccountPrintingService {
+public interface AccountPrintingService extends Bean {
 
     void printAccountDetails(Long accountId) throws NonExistentAccountException;
 
