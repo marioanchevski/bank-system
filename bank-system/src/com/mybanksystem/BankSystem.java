@@ -44,6 +44,7 @@ public class BankSystem {
             findBankService.findBankById(bankId);
             String name = ValidationUtil.userInputNonBlankName(ValidationUtil.ACCOUNT_NAME_MSG);
             double balance = ValidationUtil.userInputAmountInCorrectFormat(ValidationUtil.AMOUNT_BALANCE_MSG);
+            System.out.println("Account created.");
             createAccountService.addAccountToBank(name, balance, bankId);
         } catch (NonExistentBankException e) {
             System.out.println(e.getMessage());
@@ -57,39 +58,36 @@ public class BankSystem {
         FindBankService findBankService = (FindBankService) applicationContext.get(ApplicationContext.FIND_BANK_SERVICE);
         try {
             findBankService.findBankById(bankId);
-            ValidationUtil.showTransactionMenu();
-            TransactionType transactionType = ValidationUtil.transactionMenuDecision();
-
-            long idFrom, idTo;
-            if (transactionType != null) {
-                idFrom = ValidationUtil.userInputIdNumberInCorrectFormat(ValidationUtil.ACCOUNT_NAME_MSG);
-
-                if (transactionType == TransactionType.NORMAL) {
-                    idTo = ValidationUtil.userInputIdNumberInCorrectFormat(ValidationUtil.ACCOUNT_NAME_MSG);
-                    if (idFrom == idTo) {
-                        transactionType = TransactionType.DEPOSIT;
-                    }
-                } else {
-                    idTo = idFrom;
-                }
-                double amount = ValidationUtil.userInputAmountInCorrectFormat(ValidationUtil.TRANSACTION_AMOUNT_MSG);
-                TransactionContext context = new TransactionContext(transactionType, idFrom, idTo, amount, bankId);
-
-                TransactionService transactionService = (TransactionService) applicationContext.get(ApplicationContext.TRANSACTION_SERVICE);
-                BankService bankService = (BankService) applicationContext.get(ApplicationContext.BANK_SERVICE);
-
-                String transactionId = transactionService.createTransaction(context);
-                try {
-                    bankService.makeTransaction(transactionId, bankId);
-                    System.out.println("Transaction successful.");
-                } catch (InsufficientFundsException |
-                         NonExistentBankException e) {
-                    System.out.println(e.getMessage());
-                    System.out.println("Transaction failed.");
-                }
-            }
         } catch (NonExistentBankException e) {
             System.out.println(e.getMessage());
+        }
+        ValidationUtil.showTransactionMenu();
+        TransactionType transactionType = ValidationUtil.transactionMenuDecision();
+        long idFrom, idTo;
+        if (transactionType != null) {
+            idFrom = ValidationUtil.userInputIdNumberInCorrectFormat(ValidationUtil.ACCOUNT_NAME_MSG);
+            idTo = idFrom;
+            if (transactionType == TransactionType.NORMAL) {
+                idTo = ValidationUtil.userInputIdNumberInCorrectFormat(ValidationUtil.ACCOUNT_NAME_MSG);
+                if (idFrom == idTo) {
+                    transactionType = TransactionType.DEPOSIT;
+                }
+            }
+            double amount = ValidationUtil.userInputAmountInCorrectFormat(ValidationUtil.TRANSACTION_AMOUNT_MSG);
+            TransactionContext context = new TransactionContext(transactionType, idFrom, idTo, amount, bankId);
+
+            TransactionService transactionService = (TransactionService) applicationContext.get(ApplicationContext.TRANSACTION_SERVICE);
+            BankService bankService = (BankService) applicationContext.get(ApplicationContext.BANK_SERVICE);
+
+            try {
+                String transactionId = transactionService.createTransaction(context);
+                bankService.makeTransaction(transactionId, bankId);
+                System.out.println("Transaction successful.");
+            } catch (InsufficientFundsException |
+                     NonExistentBankException e) {
+                System.out.println(e.getMessage());
+                System.out.println("Transaction failed.");
+            }
         }
     }
 

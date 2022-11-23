@@ -35,14 +35,17 @@ public class BankServiceImpl implements BankService {
 
         // should there be provision if you try to deposit to your account
         if (transaction.getType().equals(TransactionType.DEPOSIT)) {
-            if (fromAccount.getBalance() + transaction.getAmount() < transaction.getProvision())
+            if (fromAccount.getBalance() + transaction.getAmount() < transaction.getProvision()) {
                 throw new InsufficientFundsException(transaction.getAmount());
+            }
         } else if (transaction.getType().equals(TransactionType.WITHDRAW)) {
-            if (fromAccount.getBalance() < totalTransferAmount)
+            if (fromAccount.getBalance() < totalTransferAmount) {
                 throw new InsufficientFundsException(fromAccount.getBalance(), transaction.getAmount());
+            }
         } else {
-            if (fromAccount.getBalance() < totalTransferAmount)
+            if (fromAccount.getBalance() < totalTransferAmount) {
                 throw new InsufficientFundsException(fromAccount.getBalance(), transaction.getAmount());
+            }
         }
 
         accountService.updateAccounts(transactionId);

@@ -105,6 +105,7 @@ public class ApplicationContext {
         context.put(ACCOUNT_PRINTING_SERVICE, accountPrintingService);
         context.put(TRANSACTION_SERVICE, transactionService);
     }
+
     private static void initializeData(BankRepository br, AccountRepository ar) {
         DataHolder dataHolder = new DataHolder(br, ar);
         dataHolder.init();
