@@ -19,11 +19,11 @@ public class AccountServiceImpl implements AccountService {
         Account accountFrom = transaction.getAccountFrom();
         Account accountTo = transaction.getAccountTo();
 
-        if (transaction.getType().equals(TransactionType.DEPOSIT))
+        if (transaction.getType().equals(TransactionType.DEPOSIT)) {
             accountFrom.setBalance(accountFrom.getBalance() - (transaction.getAmount() * -1 + transaction.getProvision()));
-        else if (transaction.getType().equals(TransactionType.WITHDRAW))
+        } else if (transaction.getType().equals(TransactionType.WITHDRAW)) {
             accountFrom.setBalance(accountFrom.getBalance() - (transaction.getAmount() + transaction.getProvision()));
-        else {
+        } else {
             accountFrom.setBalance(accountFrom.getBalance() - (transaction.getAmount() + transaction.getProvision()));
             accountTo.setBalance(accountTo.getBalance() + transaction.getAmount());
         }
