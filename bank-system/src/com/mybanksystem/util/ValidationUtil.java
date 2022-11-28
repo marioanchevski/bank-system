@@ -5,16 +5,7 @@ import com.mybanksystem.transaction.TransactionType;
 import java.util.Scanner;
 
 public class ValidationUtil {
-    static Scanner scanner = new Scanner(System.in);
-    public final static int AMOUNT_BALANCE_MSG = 0;
-    public final static int TRANSACTION_AMOUNT_MSG = 1;
-    public final static int FLAT_AMOUNT_MSG = 2;
-    public final static int FLAT_PERCENT_MSG = 3;
-    public final static int ACCOUNT_NAME_MSG = 0;
-    public final static int BANK_NAME_MSG = 1;
-    public final static String CORRECT_AMOUNT_FORMAT_REGEX = "[0-9]+.[0-9]{2}\\$";
-    public final static String CORRECT_ID_NUMBER_FORMAT_REGEX = "[0-9]+";
-    public final static String CORRECT_FLAT_PERCENT_FORMAT_REGEX = "^[0-9]{1,2}$";
+    private static Scanner scanner = new Scanner(System.in);
 
 
     public static void showMenu() {
@@ -42,7 +33,7 @@ public class ValidationUtil {
                 "Enter threshold amount with two decimal places and a dollar sign at the end. Example 10000.00$"};
         System.out.println(promptMsg[msgType]);
         String balanceCheck = scanner.nextLine().trim();
-        while (!balanceCheck.matches(CORRECT_AMOUNT_FORMAT_REGEX)) {
+        while (!balanceCheck.matches(Constants.CORRECT_AMOUNT_FORMAT_REGEX)) {
             System.out.println(errMsgs[msgType]);
             balanceCheck = scanner.nextLine().trim();
         }
@@ -60,7 +51,7 @@ public class ValidationUtil {
         };
         System.out.println(promptMsg[msgType]);
         String idFrom = scanner.nextLine().trim();
-        while (!idFrom.matches(CORRECT_ID_NUMBER_FORMAT_REGEX)) {
+        while (!idFrom.matches(Constants.CORRECT_ID_NUMBER_FORMAT_REGEX)) {
             System.out.println(errMsgs[msgType]);
             idFrom = scanner.nextLine().trim();
         }
@@ -83,7 +74,7 @@ public class ValidationUtil {
     public static int userInputFlatPercentInCorrectFormat() {
         System.out.println("Please enter a flat percent amount for your bank.");
         String line = scanner.nextLine();
-        while (!line.matches(CORRECT_FLAT_PERCENT_FORMAT_REGEX)) {
+        while (!line.matches(Constants.CORRECT_FLAT_PERCENT_FORMAT_REGEX)) {
             System.out.println("Flat fee must be whole number. Not greater than 99.");
             line = scanner.nextLine().trim();
         }
