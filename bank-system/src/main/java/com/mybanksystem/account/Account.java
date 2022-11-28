@@ -1,5 +1,8 @@
 package com.mybanksystem.account;
 
+import lombok.Data;
+
+@Data
 public class Account {
     private Long id;
     private String name;
@@ -9,26 +12,6 @@ public class Account {
         this.id = null;
         this.name = name;
         this.balance = balance;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     @Override

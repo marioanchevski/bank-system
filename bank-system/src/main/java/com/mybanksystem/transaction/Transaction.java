@@ -2,7 +2,9 @@ package com.mybanksystem.transaction;
 
 import com.mybanksystem.account.Account;
 import com.mybanksystem.bank.Bank;
+import lombok.Data;
 
+@Data
 public abstract class Transaction {
     private String id;
     private Account accountFrom;
@@ -22,33 +24,6 @@ public abstract class Transaction {
         this.bank = bank;
     }
 
-    public Account getAccountFrom() {
-        return accountFrom;
-    }
-
-    public Account getAccountTo() {
-        return accountTo;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public TransactionType getType() {
-        return type;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
     public abstract double getProvision();
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 }
