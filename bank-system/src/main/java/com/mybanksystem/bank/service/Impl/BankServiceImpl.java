@@ -9,8 +9,10 @@ import com.mybanksystem.bank.service.FindBankService;
 import com.mybanksystem.transaction.*;
 import com.mybanksystem.account.Account;
 import com.mybanksystem.account.exceptions.InsufficientFundsException;
+import org.springframework.stereotype.Service;
 
 
+@Service
 public class BankServiceImpl implements BankService {
     private final TransactionRepository transactionRepository;
     private final FindBankService findBankService;

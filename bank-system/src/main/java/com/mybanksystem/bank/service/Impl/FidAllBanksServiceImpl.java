@@ -5,10 +5,12 @@ import com.mybanksystem.bank.BankDTO;
 import com.mybanksystem.bank.BankRepository;
 import com.mybanksystem.bank.service.FindAllBanksService;
 import com.mybanksystem.bank.service.MapperService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class FidAllBanksServiceImpl implements FindAllBanksService {
     private final BankRepository bankRepository;
     private final MapperService mapperService;

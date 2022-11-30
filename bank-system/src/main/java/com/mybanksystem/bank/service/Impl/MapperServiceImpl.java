@@ -3,7 +3,9 @@ package com.mybanksystem.bank.service.Impl;
 import com.mybanksystem.bank.Bank;
 import com.mybanksystem.bank.BankDTO;
 import com.mybanksystem.bank.service.MapperService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class MapperServiceImpl implements MapperService {
     @Override
     public BankDTO map(Bank bank) {

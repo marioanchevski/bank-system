@@ -6,7 +6,9 @@ import com.mybanksystem.account.service.CreateAccountService;
 import com.mybanksystem.bank.Bank;
 import com.mybanksystem.bank.exceptions.NonExistentBankException;
 import com.mybanksystem.bank.service.FindBankService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CreateAccountServiceImpl implements CreateAccountService {
     private final FindBankService findBankService;
     private final AccountRepository accountRepository;

@@ -5,7 +5,9 @@ import com.mybanksystem.account.service.AccountService;
 import com.mybanksystem.transaction.Transaction;
 import com.mybanksystem.transaction.TransactionRepository;
 import com.mybanksystem.transaction.TransactionType;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AccountServiceImpl implements AccountService {
     private final TransactionRepository transactionRepository;
 

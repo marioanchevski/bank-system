@@ -3,9 +3,10 @@ package com.mybanksystem.account.service.Impl;
 import com.mybanksystem.account.Account;
 import com.mybanksystem.account.AccountRepository;
 import com.mybanksystem.account.service.FindAccountService;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
+@Service
 public class FindAccountServiceImpl implements FindAccountService {
 
     private final AccountRepository accountRepository;

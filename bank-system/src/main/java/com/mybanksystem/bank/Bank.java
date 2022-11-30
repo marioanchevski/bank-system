@@ -6,6 +6,7 @@ import com.mybanksystem.transaction.Transaction;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Bank {
     private Long id;
     private String name;

@@ -3,10 +3,11 @@ package com.mybanksystem.account.service.Impl;
 import com.mybanksystem.account.service.FindTransactionsForAccountService;
 import com.mybanksystem.transaction.Transaction;
 import com.mybanksystem.transaction.TransactionRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Service
 public class FindTransactionsForAccountServiceImpl implements FindTransactionsForAccountService {
     private final TransactionRepository transactionRepository;
 

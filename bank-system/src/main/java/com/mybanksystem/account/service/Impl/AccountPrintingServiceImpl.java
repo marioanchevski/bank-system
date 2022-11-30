@@ -8,10 +8,12 @@ import com.mybanksystem.account.service.FindTransactionsForAccountService;
 import com.mybanksystem.bank.BankRepository;
 import com.mybanksystem.transaction.Transaction;
 import com.mybanksystem.transaction.service.TransactionPrintingService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 
+@Service
 public class AccountPrintingServiceImpl implements AccountPrintingService {
 
     private final FindAccountService findAccountService;
