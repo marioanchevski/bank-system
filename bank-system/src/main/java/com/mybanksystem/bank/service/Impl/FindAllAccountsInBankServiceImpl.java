@@ -5,9 +5,10 @@ import com.mybanksystem.bank.Bank;
 import com.mybanksystem.bank.BankRepository;
 import com.mybanksystem.bank.exceptions.NonExistentBankException;
 import com.mybanksystem.bank.service.FindAllAccountsInBankService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class FindAllAccountsInBankServiceImpl implements FindAllAccountsInBankService {
     private final BankRepository bankRepository;
 

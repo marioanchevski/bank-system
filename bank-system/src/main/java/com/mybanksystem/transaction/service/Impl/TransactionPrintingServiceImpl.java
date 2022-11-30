@@ -4,7 +4,9 @@ import com.mybanksystem.transaction.Transaction;
 import com.mybanksystem.transaction.TransactionRepository;
 import com.mybanksystem.transaction.TransactionType;
 import com.mybanksystem.transaction.service.TransactionPrintingService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class TransactionPrintingServiceImpl implements TransactionPrintingService {
     private final TransactionRepository transactionRepository;
 

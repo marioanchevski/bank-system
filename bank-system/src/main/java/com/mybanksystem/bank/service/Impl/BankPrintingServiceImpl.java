@@ -4,8 +4,9 @@ import com.mybanksystem.bank.Bank;
 import com.mybanksystem.bank.exceptions.NonExistentBankException;
 import com.mybanksystem.bank.service.BankPrintingService;
 import com.mybanksystem.bank.service.FindBankService;
+import org.springframework.stereotype.Service;
 
-
+@Service
 public class BankPrintingServiceImpl implements BankPrintingService {
     private final FindBankService findBankService;
 

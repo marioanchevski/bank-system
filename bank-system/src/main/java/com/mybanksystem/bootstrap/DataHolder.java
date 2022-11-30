@@ -5,12 +5,15 @@ import com.mybanksystem.account.Account;
 import com.mybanksystem.account.AccountRepository;
 import com.mybanksystem.bank.Bank;
 import com.mybanksystem.bank.BankRepository;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
 // temporary class
 // in memory database to store the Banks
+@Component
 public class DataHolder {
 
     private final BankRepository bankRepository;
@@ -19,7 +22,7 @@ public class DataHolder {
         this.bankRepository = bankRepository;
         this.accountRepository = accountRepository;
     }
-
+    @PostConstruct
     public void init() {
         Account a1 = new Account("Mario", 5.00);
         Account a2 = new Account("Vojo", 1000.00);

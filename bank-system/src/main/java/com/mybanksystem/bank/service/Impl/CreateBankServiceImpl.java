@@ -3,7 +3,9 @@ package com.mybanksystem.bank.service.Impl;
 import com.mybanksystem.bank.Bank;
 import com.mybanksystem.bank.BankRepository;
 import com.mybanksystem.bank.service.CreateBankService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CreateBankServiceImpl implements CreateBankService {
     private final BankRepository bankRepository;
 

@@ -7,7 +7,9 @@ import com.mybanksystem.bank.exceptions.NonExistentBankException;
 import com.mybanksystem.bank.service.FindBankService;
 import com.mybanksystem.transaction.*;
 import com.mybanksystem.transaction.service.TransactionService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
     private final FindBankService findBankService;
