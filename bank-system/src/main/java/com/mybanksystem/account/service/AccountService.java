@@ -1,8 +1,7 @@
 package com.mybanksystem.account.service;
 
-import com.mybanksystem.util.Bean;
 
-public interface AccountService extends Bean {
+public interface AccountService {
     void updateAccounts(String transactionId);
 
 }

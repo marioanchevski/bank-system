@@ -18,8 +18,9 @@ import com.mybanksystem.util.Constants;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated(since = "1.0.1")
 public final class ApplicationContext {
-    private static Map<Object, Bean> applicationContext;
+    private static Map<Object, Object> applicationContext;
 
     public ApplicationContext() {
         applicationContext = new HashMap<>();
@@ -27,7 +28,7 @@ public final class ApplicationContext {
         initializeServices();
     }
 
-    public static Bean getBeanByName(String name) {
+    public static Object getBeanByName(String name) {
         return applicationContext.get(name);
     }
 

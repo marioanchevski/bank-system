@@ -1,12 +1,11 @@
 package com.mybanksystem.transaction;
 
-import com.mybanksystem.util.Bean;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
-public class TransactionRepository implements Bean {
+public class TransactionRepository {
     private Map<String, Transaction> transactionData;
 
     public TransactionRepository() {

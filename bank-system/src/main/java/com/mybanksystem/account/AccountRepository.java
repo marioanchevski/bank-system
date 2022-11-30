@@ -1,12 +1,11 @@
 package com.mybanksystem.account;
 
-import com.mybanksystem.util.Bean;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
-public class AccountRepository implements Bean {
+public class AccountRepository {
     private static Long idSeed = 10000L;
     private Map<Long, Account> accountData;
 
