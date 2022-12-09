@@ -1,6 +1,6 @@
 package com.mybanksystem.account.service;
 
-import com.mybanksystem.transaction.Transaction;
+import com.mybanksystem.transaction.model.entity.Transaction;
 
 import java.util.List;
 

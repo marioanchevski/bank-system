@@ -1,7 +1,7 @@
 package com.mybanksystem.bank.service;
 
-import com.mybanksystem.account.Account;
-import com.mybanksystem.bank.exceptions.NonExistentBankException;
+import com.mybanksystem.account.model.Account;
+import com.mybanksystem.bank.model.exceptions.NonExistentBankException;
 
 import java.util.List;
 

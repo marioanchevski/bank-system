@@ -1,6 +1,6 @@
 package com.mybanksystem.bank.service;
 
-import com.mybanksystem.bank.BankDTO;
+import com.mybanksystem.bank.model.BankDTO;
 
 import java.util.List;
 

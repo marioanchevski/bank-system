@@ -1,10 +1,12 @@
 package com.mybanksystem.transaction;
 
+import com.mybanksystem.transaction.model.entity.Transaction;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
+@Deprecated(since="1.0.1")
 public class TransactionRepository {
     private Map<String, Transaction> transactionData;
 
@@ -14,7 +16,7 @@ public class TransactionRepository {
 
     public void saveTransaction(Transaction transaction) {
         String transactionId = generateTransactionId();
-        transaction.setId(transactionId);
+        //transaction.setId(transactionId);
         transactionData.put(transactionId, transaction);
     }
 

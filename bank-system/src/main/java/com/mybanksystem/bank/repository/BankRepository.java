@@ -1,11 +1,13 @@
-package com.mybanksystem.bank;
+package com.mybanksystem.bank.repository;
 
 
+import com.mybanksystem.bank.model.entity.Bank;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
+@Deprecated(since = "1.0.1")
 public class BankRepository {
     private static Long idSeed = 100L;
     private Map<Long, Bank> bankData;

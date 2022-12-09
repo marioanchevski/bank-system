@@ -1,33 +1,40 @@
 package com.mybanksystem.bank.service.Impl;
 
 import com.mybanksystem.account.service.AccountService;
-import com.mybanksystem.account.exceptions.ZeroAmountException;
-import com.mybanksystem.bank.Bank;
-import com.mybanksystem.bank.exceptions.NonExistentBankException;
+import com.mybanksystem.account.model.exceptions.ZeroAmountException;
+import com.mybanksystem.bank.model.entity.Bank;
+import com.mybanksystem.bank.model.entity.BankTransferDetails;
+import com.mybanksystem.bank.repository.JpaBankRepository;
+import com.mybanksystem.bank.repository.JpaBankTransferDetailsRepository;
+import com.mybanksystem.bank.model.exceptions.NonExistentBankException;
 import com.mybanksystem.bank.service.BankService;
-import com.mybanksystem.bank.service.FindBankService;
 import com.mybanksystem.transaction.*;
-import com.mybanksystem.account.Account;
-import com.mybanksystem.account.exceptions.InsufficientFundsException;
+import com.mybanksystem.account.model.Account;
+import com.mybanksystem.account.model.exceptions.InsufficientFundsException;
+import com.mybanksystem.transaction.model.entity.Transaction;
+import com.mybanksystem.transaction.model.enumeration.TransactionType;
 import org.springframework.stereotype.Service;
 
 
 @Service
 public class BankServiceImpl implements BankService {
-    private final TransactionRepository transactionRepository;
-    private final FindBankService findBankService;
+    private final JpaTransactionRepository transactionRepository;
+    private final JpaBankRepository bankRepository;
     private final AccountService accountService;
 
-    public BankServiceImpl(TransactionRepository transactionRepository, FindBankService findBankService, AccountService accountService) {
+    private final JpaBankTransferDetailsRepository bankTransferDetailsRepository;
+
+    public BankServiceImpl(JpaTransactionRepository transactionRepository, JpaBankRepository bankRepository, AccountService accountService, JpaBankTransferDetailsRepository bankTransferDetailsRepository) {
         this.transactionRepository = transactionRepository;
-        this.findBankService = findBankService;
+        this.bankRepository = bankRepository;
         this.accountService = accountService;
+        this.bankTransferDetailsRepository = bankTransferDetailsRepository;
     }
 
     @Override
-    public void makeTransaction(String transactionId, Long bankId) throws InsufficientFundsException, NonExistentBankException {
-        Bank bank = findBankService.findBankById(bankId);
-        Transaction transaction = transactionRepository.findTransactionById(transactionId);
+    public void makeTransaction(Long transactionId, Long bankId) throws InsufficientFundsException, NonExistentBankException {
+        Bank bank = bankRepository.findById(bankId).get();
+        Transaction transaction = transactionRepository.findById(transactionId).get();
         Account fromAccount = transaction.getAccountFrom();
 
         double totalTransferAmount = transaction.getAmount() + transaction.getProvision();
@@ -51,9 +58,15 @@ public class BankServiceImpl implements BankService {
         }
 
         accountService.updateAccounts(transactionId);
-        bank.setTotalTransferAmount(bank.getTotalTransferAmount() + transaction.getAmount());
-        bank.setTotalTransactionFeeAmount(bank.getTotalTransactionFeeAmount() + transaction.getProvision());
-        bank.getBankTransactions().add(transaction);
+        BankTransferDetails bankTransferDetails = bankTransferDetailsRepository.findByBank(bank);
+        bankTransferDetails.setTotalTransferAmount(bankTransferDetails.getTotalTransferAmount() + transaction.getAmount());
+        bankTransferDetails.setTotalTransactionFeeAmount(bankTransferDetails.getTotalTransactionFeeAmount() + transaction.getProvision());
+/*        bank.setTotalTransferAmount(bank.getTotalTransferAmount() + transaction.getAmount());
+        bank.setTotalTransactionFeeAmount(bank.getTotalTransactionFeeAmount() + transaction.getProvision());*/
+
+        //bank.getBankTransactions().add(transaction);
+        //bankRepository.save(bank);
+        bankTransferDetailsRepository.save(bankTransferDetails);
 
     }
 

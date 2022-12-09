@@ -1,7 +1,7 @@
 package com.mybanksystem.bank.service;
 
-import com.mybanksystem.bank.Bank;
-import com.mybanksystem.bank.exceptions.NonExistentBankException;
+import com.mybanksystem.bank.model.entity.Bank;
+import com.mybanksystem.bank.model.exceptions.NonExistentBankException;
 
 
 public interface FindBankService {

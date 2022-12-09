@@ -1,4 +1,4 @@
-package com.mybanksystem.account.exceptions;
+package com.mybanksystem.account.model.exceptions;
 
 public class NonExistentAccountException extends Exception {
     public NonExistentAccountException(long accountId) {

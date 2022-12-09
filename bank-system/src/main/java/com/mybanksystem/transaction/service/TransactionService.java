@@ -1,8 +1,9 @@
 package com.mybanksystem.transaction.service;
 
-import com.mybanksystem.bank.exceptions.NonExistentBankException;
-import com.mybanksystem.transaction.TransactionContext;
+import com.mybanksystem.account.model.exceptions.NonExistentAccountException;
+import com.mybanksystem.bank.model.exceptions.NonExistentBankException;
+import com.mybanksystem.transaction.model.TransactionContext;
 
 public interface TransactionService {
-    String createTransaction(TransactionContext context) throws NonExistentBankException;
+    Long createTransaction(TransactionContext context) throws NonExistentBankException, NonExistentAccountException;
 }

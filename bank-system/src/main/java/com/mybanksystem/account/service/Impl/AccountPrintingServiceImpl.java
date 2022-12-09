@@ -1,12 +1,11 @@
 package com.mybanksystem.account.service.Impl;
 
-import com.mybanksystem.account.Account;
-import com.mybanksystem.account.exceptions.NonExistentAccountException;
+import com.mybanksystem.account.model.Account;
+import com.mybanksystem.account.model.exceptions.NonExistentAccountException;
 import com.mybanksystem.account.service.AccountPrintingService;
 import com.mybanksystem.account.service.FindAccountService;
 import com.mybanksystem.account.service.FindTransactionsForAccountService;
-import com.mybanksystem.bank.BankRepository;
-import com.mybanksystem.transaction.Transaction;
+import com.mybanksystem.transaction.model.entity.Transaction;
 import com.mybanksystem.transaction.service.TransactionPrintingService;
 import org.springframework.stereotype.Service;
 

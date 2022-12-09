@@ -1,5 +1,6 @@
 package com.mybanksystem;
 
+import com.mybanksystem.bank.repository.JpaBankRepository;
 import com.mybanksystem.components.AccountComponents;
 import com.mybanksystem.components.BankComponents;
 import com.mybanksystem.components.TransactionComponents;
@@ -15,7 +16,6 @@ public class BankSystem {
     public static void main(String[] args) {
         SpringApplication.run(BankSystem.class, args);
         Scanner scanner = new Scanner(System.in);
-
         while (true) {
             ValidationUtil.showMenu();
             String decision = scanner.nextLine();

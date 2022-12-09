@@ -1,22 +1,22 @@
 package com.mybanksystem.transaction.service.Impl;
 
-import com.mybanksystem.transaction.Transaction;
-import com.mybanksystem.transaction.TransactionRepository;
-import com.mybanksystem.transaction.TransactionType;
+import com.mybanksystem.transaction.JpaTransactionRepository;
+import com.mybanksystem.transaction.model.entity.Transaction;
+import com.mybanksystem.transaction.model.enumeration.TransactionType;
 import com.mybanksystem.transaction.service.TransactionPrintingService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class TransactionPrintingServiceImpl implements TransactionPrintingService {
-    private final TransactionRepository transactionRepository;
+    private final JpaTransactionRepository transactionRepository;
 
-    public TransactionPrintingServiceImpl(TransactionRepository transactionRepository) {
+    public TransactionPrintingServiceImpl(JpaTransactionRepository transactionRepository) {
         this.transactionRepository = transactionRepository;
     }
 
     @Override
-    public String printTransaction(String transactionId) {
-        Transaction transaction = transactionRepository.findTransactionById(transactionId);
+    public String printTransaction(Long transactionId) {
+        Transaction transaction = transactionRepository.findById(transactionId).get();
         if (transaction.getType().equals(TransactionType.NORMAL))
             return String.format("Sent:%.2f$, from:%d to:%d, account:%d paid: %s\n",
                     transaction.getAmount(),

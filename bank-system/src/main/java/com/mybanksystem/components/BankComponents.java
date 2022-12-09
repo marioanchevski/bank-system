@@ -1,7 +1,7 @@
 package com.mybanksystem.components;
 
-import com.mybanksystem.bank.BankRepository;
-import com.mybanksystem.bank.exceptions.NonExistentBankException;
+import com.mybanksystem.bank.model.exceptions.NonExistentBankException;
+import com.mybanksystem.bank.repository.JpaBankTransferDetailsRepository;
 import com.mybanksystem.bank.service.*;
 import com.mybanksystem.util.Constants;
 import com.mybanksystem.util.ValidationUtil;
@@ -9,32 +9,33 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class BankComponents {
-    private static BankRepository bankRepository;
     private static FindAllBanksService findAllBanksService;
     private static CreateBankService createBankService;
     private static FindAllAccountsInBankService findAllAccountsInBankService;
     private static BankPrintingService bankPrintingService;
     private static FindBankService findBankService;
+    private static JpaBankTransferDetailsRepository bankTransferDetailsRepository;
 
-    public BankComponents(BankRepository bankRepository,
-                          FindAllBanksService findAllBanksService,
+    public BankComponents(FindAllBanksService findAllBanksService,
                           CreateBankService createBankService,
                           FindAllAccountsInBankService findAllAccountsInBankService,
                           BankPrintingService bankPrintingService,
-                          FindBankService findBankService){
-        this.bankRepository=bankRepository;
+                          FindBankService findBankService,
+                          JpaBankTransferDetailsRepository bankTransferDetailsRepository
+    ){
         this.findAllBanksService=findAllBanksService;
         this.createBankService=createBankService;
         this.findAllAccountsInBankService=findAllAccountsInBankService;
         this.bankPrintingService=bankPrintingService;
         this.findBankService =findBankService;
+        this.bankTransferDetailsRepository = bankTransferDetailsRepository;
     }
 
 
     public static void createNewBank() {
         String bankName = ValidationUtil.userInputNonBlankName(Constants.BANK_NAME_MSG);
-        Double flatFee = ValidationUtil.userInputAmountInCorrectFormat(Constants.FLAT_AMOUNT_MSG);
         Integer percentFee = ValidationUtil.userInputFlatPercentInCorrectFormat();
+        Double flatFee = ValidationUtil.userInputAmountInCorrectFormat(Constants.FLAT_AMOUNT_MSG);
         Double thresholdAmount = ValidationUtil.userInputAmountInCorrectFormat(Constants.FLAT_PERCENT_MSG);
         createBankService.createNewBank(bankName, thresholdAmount, flatFee, percentFee);
         System.out.println(bankName + " successfully created.");
@@ -69,7 +70,7 @@ public class BankComponents {
         Long bankId = ValidationUtil.userInputIdNumberInCorrectFormat(Constants.BANK_NAME_MSG);
         try {
             System.out.format("Total transaction fee: %10.2f$",
-                    findBankService.findBankById(bankId).getTotalTransactionFeeAmount());
+                    bankTransferDetailsRepository.findByBank(findBankService.findBankById(bankId)).getTotalTransactionFeeAmount());
         } catch (NonExistentBankException e) {
             System.out.println(e.getMessage());
         }
@@ -80,7 +81,7 @@ public class BankComponents {
         Long bankId = ValidationUtil.userInputIdNumberInCorrectFormat(Constants.BANK_NAME_MSG);
         try {
             System.out.format("Total transfer amount: %10.2f$",
-                    findBankService.findBankById(bankId).getTotalTransferAmount());
+                    bankTransferDetailsRepository.findByBank(findBankService.findBankById(bankId)).getTotalTransferAmount());
         } catch (NonExistentBankException e) {
             System.out.println(e.getMessage());
         }

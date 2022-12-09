@@ -1,11 +1,12 @@
 package com.mybanksystem.components;
 
-import com.mybanksystem.account.exceptions.InsufficientFundsException;
-import com.mybanksystem.bank.exceptions.NonExistentBankException;
+import com.mybanksystem.account.model.exceptions.InsufficientFundsException;
+import com.mybanksystem.account.model.exceptions.NonExistentAccountException;
+import com.mybanksystem.bank.model.exceptions.NonExistentBankException;
 import com.mybanksystem.bank.service.BankService;
 import com.mybanksystem.bank.service.FindBankService;
-import com.mybanksystem.transaction.TransactionContext;
-import com.mybanksystem.transaction.TransactionType;
+import com.mybanksystem.transaction.model.TransactionContext;
+import com.mybanksystem.transaction.model.enumeration.TransactionType;
 import com.mybanksystem.transaction.service.TransactionService;
 import com.mybanksystem.util.Constants;
 import com.mybanksystem.util.ValidationUtil;
@@ -31,6 +32,7 @@ public class TransactionComponents {
             findBankService.findBankById(bankId);
         } catch (NonExistentBankException e) {
             System.out.println(e.getMessage());
+            return;
         }
         ValidationUtil.showTransactionMenu();
         TransactionType transactionType = ValidationUtil.transactionMenuDecision();
@@ -49,11 +51,10 @@ public class TransactionComponents {
 
 
             try {
-                String transactionId = transactionService.createTransaction(context);
+                Long transactionId = transactionService.createTransaction(context);
                 bankService.makeTransaction(transactionId, bankId);
                 System.out.println("Transaction successful.");
-            } catch (InsufficientFundsException |
-                     NonExistentBankException e) {
+            } catch (InsufficientFundsException | NonExistentBankException | NonExistentAccountException e) {
                 System.out.println(e.getMessage());
                 System.out.println("Transaction failed.");
             }

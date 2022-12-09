@@ -1,18 +1,10 @@
 package com.mybanksystem.context;
 
 import com.mybanksystem.account.AccountRepository;
-import com.mybanksystem.account.service.*;
-import com.mybanksystem.account.service.Impl.*;
-import com.mybanksystem.bank.BankRepository;
+import com.mybanksystem.bank.repository.BankRepository;
 import com.mybanksystem.bank.service.*;
 import com.mybanksystem.bank.service.Impl.*;
-import com.mybanksystem.bootstrap.DataHolder;
 import com.mybanksystem.transaction.TransactionRepository;
-import com.mybanksystem.transaction.service.Impl.TransactionPrintingServiceImpl;
-import com.mybanksystem.transaction.service.Impl.TransactionServiceImpl;
-import com.mybanksystem.transaction.service.TransactionPrintingService;
-import com.mybanksystem.transaction.service.TransactionService;
-import com.mybanksystem.util.Bean;
 import com.mybanksystem.util.Constants;
 
 import java.util.HashMap;
@@ -40,12 +32,12 @@ public final class ApplicationContext {
         applicationContext.put(Constants.ACCOUNT_REPOSITORY, accountRepository);
         applicationContext.put(Constants.BANK_REPOSITORY, bankRepository);
         applicationContext.put(Constants.TRANSACTION_REPOSITORY, transactionRepository);
-        initializeData(bankRepository, accountRepository);
+        //initializeData(bankRepository, accountRepository);
     }
 
     public void initializeServices() {
         MapperService mapperService = new MapperServiceImpl();
-        FindAccountService findAccountService = new FindAccountServiceImpl((AccountRepository) applicationContext.get(Constants.ACCOUNT_REPOSITORY));
+        /*FindAccountService findAccountService = new FindAccountServiceImpl((AccountRepository) applicationContext.get(Constants.ACCOUNT_REPOSITORY));
         FindBankService findBankService = new FindBankServiceImpl((BankRepository) applicationContext.get(Constants.BANK_REPOSITORY));
         CreateBankService createBankService = new CreateBankServiceImpl((BankRepository) applicationContext.get(Constants.BANK_REPOSITORY));
 
@@ -101,11 +93,13 @@ public final class ApplicationContext {
         applicationContext.put(Constants.BANK_SERVICE, bankService);
         applicationContext.put(Constants.ACCOUNT_PRINTING_SERVICE, accountPrintingService);
         applicationContext.put(Constants.TRANSACTION_SERVICE, transactionService);
+        */
+
     }
 
-    private void initializeData(BankRepository br, AccountRepository ar) {
+/*    private void initializeData(BankRepository br, AccountRepository ar) {
         DataHolder dataHolder = new DataHolder(br, ar);
         dataHolder.init();
-    }
+    }*/
 
 }

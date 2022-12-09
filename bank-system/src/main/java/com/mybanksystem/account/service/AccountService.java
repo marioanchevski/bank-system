@@ -2,6 +2,6 @@ package com.mybanksystem.account.service;
 
 
 public interface AccountService {
-    void updateAccounts(String transactionId);
+    void updateAccounts(Long transactionId);
 
 }

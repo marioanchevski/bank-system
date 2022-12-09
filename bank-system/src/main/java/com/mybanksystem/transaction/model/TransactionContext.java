@@ -1,4 +1,6 @@
-package com.mybanksystem.transaction;
+package com.mybanksystem.transaction.model;
+
+import com.mybanksystem.transaction.model.enumeration.TransactionType;
 
 public class TransactionContext {
     private TransactionType type;

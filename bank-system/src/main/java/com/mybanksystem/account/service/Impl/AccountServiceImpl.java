@@ -1,23 +1,27 @@
 package com.mybanksystem.account.service.Impl;
 
-import com.mybanksystem.account.Account;
+import com.mybanksystem.account.model.Account;
+import com.mybanksystem.account.JpaAccountRepository;
 import com.mybanksystem.account.service.AccountService;
-import com.mybanksystem.transaction.Transaction;
-import com.mybanksystem.transaction.TransactionRepository;
-import com.mybanksystem.transaction.TransactionType;
+import com.mybanksystem.transaction.JpaTransactionRepository;
+import com.mybanksystem.transaction.model.entity.Transaction;
+import com.mybanksystem.transaction.model.enumeration.TransactionType;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AccountServiceImpl implements AccountService {
-    private final TransactionRepository transactionRepository;
+    private final JpaTransactionRepository transactionRepository;
+    private final JpaAccountRepository accountRepository;
 
-    public AccountServiceImpl(TransactionRepository transactionRepository) {
+    public AccountServiceImpl(JpaTransactionRepository transactionRepository,
+                              JpaAccountRepository accountRepository) {
         this.transactionRepository = transactionRepository;
+        this.accountRepository = accountRepository;
     }
 
     @Override
-    public void updateAccounts(String transactionId) {
-        Transaction transaction = transactionRepository.findTransactionById(transactionId);
+    public void updateAccounts(Long transactionId) {
+        Transaction transaction = transactionRepository.findById(transactionId).get();
         Account accountFrom = transaction.getAccountFrom();
         Account accountTo = transaction.getAccountTo();
 
@@ -28,7 +32,9 @@ public class AccountServiceImpl implements AccountService {
         } else {
             accountFrom.setBalance(accountFrom.getBalance() - (transaction.getAmount() + transaction.getProvision()));
             accountTo.setBalance(accountTo.getBalance() + transaction.getAmount());
+            accountRepository.save(accountTo);
         }
+        accountRepository.save(accountFrom);
 
     }
 

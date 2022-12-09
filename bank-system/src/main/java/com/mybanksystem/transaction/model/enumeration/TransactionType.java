@@ -1,4 +1,4 @@
-package com.mybanksystem.transaction;
+package com.mybanksystem.transaction.model.enumeration;
 
 public enum TransactionType {
     WITHDRAW,

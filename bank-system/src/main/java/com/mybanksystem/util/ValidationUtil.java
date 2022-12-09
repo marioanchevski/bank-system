@@ -1,6 +1,6 @@
 package com.mybanksystem.util;
 
-import com.mybanksystem.transaction.TransactionType;
+import com.mybanksystem.transaction.model.enumeration.TransactionType;
 
 import java.util.Scanner;
 
@@ -43,11 +43,13 @@ public class ValidationUtil {
 
 
     public static long userInputIdNumberInCorrectFormat(int msgType) {
-        String[] promptMsg = {"Please enter the bank Id number.",
-                "Enter the account Id you wish to perform the transaction on."};
+        String[] promptMsg = {
+                "Enter the account Id you wish to perform the transaction on.",
+                "Please enter the bank Id number."
+        };
         String[] errMsgs = {
-                "The bank id must be a number. Please try again.",
-                "The account id must be a number. Please try again."
+                "The account id must be a number. Please try again.",
+                "The bank id must be a number. Please try again."
         };
         System.out.println(promptMsg[msgType]);
         String idFrom = scanner.nextLine().trim();

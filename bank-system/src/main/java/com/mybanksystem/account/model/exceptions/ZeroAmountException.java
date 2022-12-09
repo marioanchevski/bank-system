@@ -1,4 +1,4 @@
-package com.mybanksystem.account.exceptions;
+package com.mybanksystem.account.model.exceptions;
 
 public class ZeroAmountException extends InsufficientFundsException{
     public ZeroAmountException() {

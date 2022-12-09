@@ -1,9 +1,9 @@
 package com.mybanksystem.components;
 
-import com.mybanksystem.account.exceptions.NonExistentAccountException;
+import com.mybanksystem.account.model.exceptions.NonExistentAccountException;
 import com.mybanksystem.account.service.AccountPrintingService;
 import com.mybanksystem.account.service.CreateAccountService;
-import com.mybanksystem.bank.exceptions.NonExistentBankException;
+import com.mybanksystem.bank.model.exceptions.NonExistentBankException;
 import com.mybanksystem.bank.service.FindBankService;
 import com.mybanksystem.util.Constants;
 import com.mybanksystem.util.ValidationUtil;

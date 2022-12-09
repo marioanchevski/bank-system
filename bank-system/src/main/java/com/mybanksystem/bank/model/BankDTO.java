@@ -1,4 +1,4 @@
-package com.mybanksystem.bank;
+package com.mybanksystem.bank.model;
 
 public class BankDTO {
     private Long id;

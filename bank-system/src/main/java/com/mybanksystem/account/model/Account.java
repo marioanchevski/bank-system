@@ -1,14 +1,41 @@
-package com.mybanksystem.account;
+package com.mybanksystem.account.model;
 
+import com.mybanksystem.bank.model.entity.Bank;
+
+import javax.persistence.*;
+
+@Entity
 public class Account {
+    @SequenceGenerator(
+            name = "account_sequence",
+            sequenceName = "ACC_SEQ",
+            initialValue = 10000,
+            allocationSize = 1
+    )
+    @Id
+    @GeneratedValue(
+            generator = "account_sequence",
+            strategy = GenerationType.SEQUENCE
+    )
     private Long id;
     private String name;
     private Double balance;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Bank bank;
 
     public Account(String name, double balance) {
         this.id = null;
         this.name = name;
         this.balance = balance;
+    }
+
+    public Account(String name, Double balance, Bank bank) {
+        this.name = name;
+        this.balance = balance;
+        this.bank = bank;
+    }
+
+    public Account() {
     }
 
     public Long getId() {
@@ -29,6 +56,10 @@ public class Account {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Bank getBank() {
+        return bank;
     }
 
     @Override

@@ -1,10 +1,12 @@
 package com.mybanksystem.account;
 
+import com.mybanksystem.account.model.Account;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
+@Deprecated(since="1.0.1")
 public class AccountRepository {
     private static Long idSeed = 10000L;
     private Map<Long, Account> accountData;
