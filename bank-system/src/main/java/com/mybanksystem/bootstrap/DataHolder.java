@@ -28,15 +28,17 @@ public class DataHolder {
         this.bankTransferDetailsRepository = bankTransferDetailsRepository;
         this.bankConfigurationRepository = bankConfigurationRepository;
     }
-    @PostConstruct
-    public void init() {
-        BankConfiguration bankConfiguration = new BankConfiguration( 10000.00, 5.00, 2);
-        bankConfigurationRepository.save(bankConfiguration);
 
-        Bank testBank = new Bank("LinkPlus-Bank", bankConfiguration);
+
+    public void init() {
+
+        Bank testBank = new Bank("LinkPlus-Bank");
         bankRepository.save(testBank);
-        Bank secondBank = new Bank("NLB", bankConfiguration);
+        Bank secondBank = new Bank("NLB");
         bankRepository.save(secondBank);
+
+        BankConfiguration bankConfiguration = new BankConfiguration( 10000.00, 5.00, 2, testBank);
+        bankConfigurationRepository.save(bankConfiguration);
 
         BankTransferDetails bankTransferDetails = new BankTransferDetails(testBank);
         bankTransferDetailsRepository.save(bankTransferDetails);
