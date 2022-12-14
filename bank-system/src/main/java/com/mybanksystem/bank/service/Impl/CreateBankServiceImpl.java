@@ -25,26 +25,10 @@ public class CreateBankServiceImpl implements CreateBankService {
 
     @Override
     public void createNewBank(String name, Double thresholdAmount, Double flatFeeAmount, Integer percentFeeAmount) {
-        BankConfiguration bankConfiguration = null;
-        if (bankConfigurationRepository.findBankConfigurationByThresholdAmountAndFlatFeeAmountAndPercentFeeAmount(
-                thresholdAmount,
-                flatFeeAmount,
-                percentFeeAmount
-        ).isPresent()) {
-            bankConfiguration = bankConfigurationRepository.findBankConfigurationByThresholdAmountAndFlatFeeAmountAndPercentFeeAmount(
-                    thresholdAmount,
-                    flatFeeAmount,
-                    percentFeeAmount
-            ).get();
-        } else {
-            bankConfiguration = new BankConfiguration(thresholdAmount, flatFeeAmount, percentFeeAmount);
-            bankConfigurationRepository.save(bankConfiguration);
-        }
 
-
-        Bank bank = new Bank(name, bankConfiguration);
+        Bank bank = new Bank(name);
         bankRepository.save(bank);
-
+        bankConfigurationRepository.save(new BankConfiguration(thresholdAmount, flatFeeAmount, percentFeeAmount, bank));
         bankTransferDetailsRepository.save(new BankTransferDetails(bank));
     }
 }

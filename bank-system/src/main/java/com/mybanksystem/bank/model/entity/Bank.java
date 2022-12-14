@@ -21,18 +21,18 @@ public class Bank {
     private String name;
 
     @OneToOne(mappedBy = "bank", cascade = CascadeType.ALL)
+
     private BankTransferDetails bankTransferDetails;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "bank", cascade = CascadeType.ALL)
     private BankConfiguration bankConfiguration;
 
     public Bank() {
     }
 
 
-    public Bank(String name, BankConfiguration bankConfiguration) {
+    public Bank(String name) {
         this.name = name;
-        this.bankConfiguration = bankConfiguration;
     }
 
     public String getName() {

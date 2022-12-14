@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface JpaBankConfigurationRepository extends JpaRepository<BankConfiguration, Long> {
-
+    Optional<BankConfiguration> findByBankId(Long bankId);
     Optional<BankConfiguration> findBankConfigurationByThresholdAmountAndFlatFeeAmountAndPercentFeeAmount(
             Double thresholdAmount,
             Double flatFeeAmount,
