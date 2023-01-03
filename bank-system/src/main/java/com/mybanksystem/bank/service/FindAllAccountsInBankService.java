@@ -1,10 +1,9 @@
 package com.mybanksystem.bank.service;
 
-import com.mybanksystem.account.model.Account;
-import com.mybanksystem.bank.model.exceptions.NonExistentBankException;
+import com.mybanksystem.account.model.dto.AccountDTO;
 
-import java.util.List;
+import java.util.Collection;
 
-public interface FindAllAccountsInBankService{
-    List<Account> findAll(Long bankId) throws NonExistentBankException;
+public interface FindAllAccountsInBankService {
+    Collection<AccountDTO> findAll(String bankUUID);
 }

@@ -1,41 +1,52 @@
 package com.mybanksystem.account.service.Impl;
 
 import com.mybanksystem.account.model.Account;
-import com.mybanksystem.account.JpaAccountRepository;
 import com.mybanksystem.account.service.AccountService;
 import com.mybanksystem.transaction.JpaTransactionRepository;
-import com.mybanksystem.transaction.model.entity.Transaction;
 import com.mybanksystem.transaction.model.enumeration.TransactionType;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-@Service
-public class AccountServiceImpl implements AccountService {
-    private final JpaTransactionRepository transactionRepository;
-    private final JpaAccountRepository accountRepository;
+import javax.transaction.Transactional;
+import java.math.BigDecimal;
 
-    public AccountServiceImpl(JpaTransactionRepository transactionRepository,
-                              JpaAccountRepository accountRepository) {
-        this.transactionRepository = transactionRepository;
-        this.accountRepository = accountRepository;
-    }
+@Service
+@RequiredArgsConstructor
+public class AccountServiceImpl implements AccountService {
+
+    private final JpaTransactionRepository transactionRepository;
 
     @Override
-    public void updateAccounts(Long transactionId) {
-        Transaction transaction = transactionRepository.findById(transactionId).get();
+    @Transactional
+    public void updateAccounts(String transactionUUID) {
+        var transaction = transactionRepository.findTransactionByUUID(transactionUUID);
+
         Account accountFrom = transaction.getAccountFrom();
         Account accountTo = transaction.getAccountTo();
+        BigDecimal result = null;
+
 
         if (transaction.getType().equals(TransactionType.DEPOSIT)) {
-            accountFrom.setBalance(accountFrom.getBalance() - (transaction.getAmount() * -1 + transaction.getProvision()));
+            result = accountFrom.getBalance().subtract(
+                    transaction.getAmount().multiply(new BigDecimal("-1"))
+                            .add(transaction.getProvision())
+            );
+            accountFrom.setBalance(result);
         } else if (transaction.getType().equals(TransactionType.WITHDRAW)) {
-            accountFrom.setBalance(accountFrom.getBalance() - (transaction.getAmount() + transaction.getProvision()));
+            result = accountFrom.getBalance().subtract(
+                    transaction.getAmount().add(transaction.getProvision())
+            );
+            accountFrom.setBalance(result);
         } else {
-            accountFrom.setBalance(accountFrom.getBalance() - (transaction.getAmount() + transaction.getProvision()));
-            accountTo.setBalance(accountTo.getBalance() + transaction.getAmount());
-            accountRepository.save(accountTo);
-        }
-        accountRepository.save(accountFrom);
+            result = accountFrom.getBalance().subtract(
+                    transaction.getAmount().add(
+                            transaction.getProvision())
+            );
 
+            accountFrom.setBalance(result);
+
+            accountTo.setBalance(accountTo.getBalance().add(transaction.getAmount()));
+        }
     }
 
 

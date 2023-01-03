@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd
+		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+
+    <changeSet  author="Anchevski M"  id="Ticket01-dropForeignKeyConstraint">
+        <dropForeignKeyConstraint baseTableName="bank"
+                                  baseTableSchemaName="public"
+                                  constraintName="fklpcr4c5m46e0f5aifkibwe3yk"/>
+    </changeSet>
+
+    <changeSet author="Anchevski M" id="Ticket01-dropColumn">
+        <dropColumn columnName="bank_configuration_id"
+                    schemaName="public"
+                    tableName="bank">
+        </dropColumn>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,66 +1,84 @@
 package com.mybanksystem.transaction.service.Impl;
 
-import com.mybanksystem.account.model.Account;
+import com.mybanksystem.account.JpaAccountRepository;
 import com.mybanksystem.account.model.exceptions.NonExistentAccountException;
-import com.mybanksystem.account.service.FindAccountService;
-import com.mybanksystem.bank.model.entity.Bank;
-import com.mybanksystem.bank.model.entity.BankConfiguration;
+import com.mybanksystem.account.service.AccountService;
 import com.mybanksystem.bank.model.exceptions.NonExistentBankException;
 import com.mybanksystem.bank.repository.JpaBankConfigurationRepository;
-import com.mybanksystem.bank.service.FindBankService;
+import com.mybanksystem.bank.service.BankService;
 import com.mybanksystem.transaction.*;
+import com.mybanksystem.transaction.model.dto.TransactionDTO;
 import com.mybanksystem.transaction.model.entity.FlatAmountProvisionTransaction;
 import com.mybanksystem.transaction.model.entity.FlatPercentProvisionTransaction;
 import com.mybanksystem.transaction.model.entity.Transaction;
-import com.mybanksystem.transaction.model.TransactionContext;
+import com.mybanksystem.transaction.model.enumeration.TransactionType;
 import com.mybanksystem.transaction.service.TransactionService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.math.BigDecimal;
+import java.util.UUID;
+
 @Service
+@RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
     private final JpaTransactionRepository transactionRepository;
-    private final FindBankService findBankService;
-    private final FindAccountService findAccountService;
-private final JpaBankConfigurationRepository bankConfigurationRepository;
-
-    public TransactionServiceImpl(JpaTransactionRepository transactionRepository, FindBankService findBankService, FindAccountService findAccountService, JpaBankConfigurationRepository bankConfigurationRepository) {
-        this.transactionRepository = transactionRepository;
-        this.findBankService = findBankService;
-        this.findAccountService = findAccountService;
-        this.bankConfigurationRepository = bankConfigurationRepository;
-    }
+    private final JpaAccountRepository accountRepository;
+    private final BankService bankService;
+    private final JpaBankConfigurationRepository bankConfigurationRepository;
+    private final AccountService accountService;
 
     @Override
-    public Long createTransaction(TransactionContext context) throws NonExistentBankException, NonExistentAccountException {
-        Bank bank = findBankService.findBankById(context.getBankId());
-        Account accountFrom = findAccountService.findAccountById(context.getFromId())
-                .orElseThrow(()-> new NonExistentAccountException(context.getFromId()));
-        Account accountTo = findAccountService.findAccountById(context.getToId())
-                .orElseThrow(() -> new NonExistentAccountException(context.getToId()));
+    @Transactional
+    public String createTransaction(TransactionDTO context, TransactionType transactionType) {
 
-        BankConfiguration bankConfiguration = bankConfigurationRepository.findById(bank.getBankConfiguration().getId()).get();
-        Transaction transaction = null; //bank.getThresholdAmount()
-        if (context.getAmount() < -1) {
+        Transaction transaction = resolveTransactionType(context, transactionType);
+        transactionRepository.save(transaction);
+
+        bankService.checkValidAmount(transaction.getUUID());
+
+        accountService.updateAccounts(transaction.getUUID());
+
+        return transaction.getUUID();
+    }
+
+    private Transaction resolveTransactionType(TransactionDTO context, TransactionType transactionType) {
+
+
+        var accountFrom = accountRepository.findAccountByUUID(context.getAccountFromUUID())
+                .orElseThrow(() -> new NonExistentAccountException(context.getAccountFromUUID()));
+
+        var accountTo = accountRepository.findAccountByUUID(context.getAccountToUUID())
+                .orElseThrow(() -> new NonExistentAccountException(context.getAccountToUUID()));
+
+        var bankConfiguration = bankConfigurationRepository.findByBankUUID(accountFrom.getBank().getUUID())
+                .orElseThrow(() -> new NonExistentBankException(accountFrom.getBank().getUUID()));
+
+        Transaction transaction;
+        if (BigDecimal.valueOf(context.getAmount()).compareTo(bankConfiguration.getThresholdAmount()) < 0) {
             transaction = new FlatAmountProvisionTransaction(
                     accountFrom,
                     accountTo,
-                    context.getAmount(),
+                    BigDecimal.valueOf(context.getAmount()),
                     "FlatAmount",
-                    context.getType()
-                    ,bankConfiguration.getFlatFeeAmount()
+                    transactionType,
+                    bankConfiguration.getFlatFeeAmount()
             );
 
         } else {
             transaction = new FlatPercentProvisionTransaction(
                     accountFrom,
                     accountTo,
-                    context.getAmount(),
+                    BigDecimal.valueOf(context.getAmount()),
                     "FlatPercent",
-                    context.getType(),
-                    context.getAmount() * (bankConfiguration.getPercentFeeAmount() / 100.0)
+                    transactionType,
+                    bankConfiguration.getPercentFeeAmount()
             );
         }
-        transactionRepository.save(transaction);
-        return transaction.getId();
+
+        UUID uuid = UUID.randomUUID();
+        transaction.setUUID(uuid.toString());
+        return transaction;
     }
 }

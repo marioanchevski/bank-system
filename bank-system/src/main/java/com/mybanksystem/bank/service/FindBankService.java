@@ -1,9 +1,7 @@
 package com.mybanksystem.bank.service;
 
-import com.mybanksystem.bank.model.entity.Bank;
-import com.mybanksystem.bank.model.exceptions.NonExistentBankException;
-
+import com.mybanksystem.bank.model.dto.BankDTO;
 
 public interface FindBankService {
-    Bank findBankById(Long bankId) throws NonExistentBankException;
+    BankDTO findBankById(String bankUUID);
 }

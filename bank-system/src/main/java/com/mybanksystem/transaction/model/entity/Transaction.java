@@ -4,6 +4,7 @@ import com.mybanksystem.account.model.Account;
 import com.mybanksystem.transaction.model.enumeration.TransactionType;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -19,11 +20,12 @@ public abstract class Transaction {
             strategy = GenerationType.IDENTITY
     )
     private Long id;
+    private String UUID;
     @ManyToOne
     private Account accountFrom;
     @ManyToOne
     private Account accountTo;
-    private Double amount;
+    private BigDecimal amount;
     private String description;
     @Enumerated(EnumType.STRING)
     private TransactionType type;
@@ -31,7 +33,7 @@ public abstract class Transaction {
     public Transaction() {
     }
 
-    public Transaction(Account accountFrom, Account accountTo, Double amount, String description, TransactionType type) {
+    public Transaction(Account accountFrom, Account accountTo, BigDecimal amount, String description, TransactionType type) {
         this.id = null;
         this.accountFrom = accountFrom;
         this.accountTo = accountTo;
@@ -48,7 +50,7 @@ public abstract class Transaction {
         return accountTo;
     }
 
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
@@ -60,7 +62,7 @@ public abstract class Transaction {
         return description;
     }
 
-    public abstract double getProvision();
+    public abstract BigDecimal getProvision();
 
     public Long getId() {
         return id;
@@ -70,4 +72,11 @@ public abstract class Transaction {
         this.id = id;
     }
 
+    public String getUUID() {
+        return UUID;
+    }
+
+    public void setUUID(String UUID) {
+        this.UUID = UUID;
+    }
 }

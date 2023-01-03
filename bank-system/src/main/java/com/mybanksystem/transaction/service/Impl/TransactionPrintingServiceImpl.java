@@ -17,7 +17,7 @@ public class TransactionPrintingServiceImpl implements TransactionPrintingServic
     @Override
     public String printTransaction(Long transactionId) {
         Transaction transaction = transactionRepository.findById(transactionId).get();
-        if (transaction.getType().equals(TransactionType.NORMAL))
+        if (transaction.getType().equals(TransactionType.TRANSFER))
             return String.format("Sent:%.2f$, from:%d to:%d, account:%d paid: %s\n",
                     transaction.getAmount(),
                     transaction.getAccountFrom().getId(),

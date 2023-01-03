@@ -3,6 +3,7 @@ package com.mybanksystem.account.model;
 import com.mybanksystem.bank.model.entity.Bank;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 public class Account {
@@ -18,18 +19,20 @@ public class Account {
             strategy = GenerationType.SEQUENCE
     )
     private Long id;
+
+    private String UUID;
     private String name;
-    private Double balance;
+    private BigDecimal balance;
     @ManyToOne(fetch = FetchType.LAZY)
     private Bank bank;
 
-    public Account(String name, double balance) {
+    public Account(String name, BigDecimal balance) {
         this.id = null;
         this.name = name;
         this.balance = balance;
     }
 
-    public Account(String name, Double balance, Bank bank) {
+    public Account(String name, BigDecimal balance, Bank bank) {
         this.name = name;
         this.balance = balance;
         this.bank = bank;
@@ -42,12 +45,16 @@ public class Account {
         return id;
     }
 
-    public Double getBalance() {
-        return balance;
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
     }
 
-    public void setBalance(double balance) {
-        this.balance = balance;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
     }
 
     public String getName() {
@@ -60,6 +67,18 @@ public class Account {
 
     public Bank getBank() {
         return bank;
+    }
+
+    public void setBank(Bank bank) {
+        this.bank = bank;
+    }
+
+    public String getUUID() {
+        return UUID;
+    }
+
+    public void setUUID(String UUID) {
+        this.UUID = UUID;
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.mybanksystem.account.service;
 
-import com.mybanksystem.bank.model.exceptions.NonExistentBankException;
+import java.math.BigDecimal;
 
 public interface CreateAccountService {
-    void addAccountToBank(String name, Double balance, Long bankId) throws NonExistentBankException;
+    String addAccountToBank(String name, BigDecimal balance, String bankName);
 }
