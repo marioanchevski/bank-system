@@ -92,7 +92,7 @@ public class ValidationUtil {
             case DEPOSIT:
                 return TransactionType.DEPOSIT;
             case NORMAL:
-                return TransactionType.NORMAL;
+                return TransactionType.TRANSFER;
             default:
                 return null;
         }

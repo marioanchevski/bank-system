@@ -1,7 +1,10 @@
 package com.mybanksystem.bank.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-import java.util.List;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 @Entity
 @Table(indexes = {})
@@ -10,45 +13,53 @@ public class BankConfiguration {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     // bigdecimal
-    private Double thresholdAmount;
-    private Double flatFeeAmount;
-    private Integer percentFeeAmount;
+    private BigDecimal thresholdAmount;
+    private BigDecimal flatFeeAmount;
+    private BigInteger percentFeeAmount;
 
+    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     private Bank bank;
 
 
-    public BankConfiguration(Double thresholdAmount, Double flatFeeAmount, Integer percentFeeAmount, Bank bank) {
+    public BankConfiguration(BigDecimal thresholdAmount, BigDecimal flatFeeAmount, BigInteger percentFeeAmount, Bank bank) {
         this.thresholdAmount = thresholdAmount;
         this.flatFeeAmount = flatFeeAmount;
         this.percentFeeAmount = percentFeeAmount;
         this.bank = bank;
     }
 
+
+    public BankConfiguration(BigDecimal thresholdAmount, BigDecimal flatFeeAmount, BigInteger percentFeeAmount) {
+        this.thresholdAmount = thresholdAmount;
+        this.flatFeeAmount = flatFeeAmount;
+        this.percentFeeAmount = percentFeeAmount;
+    }
+
     public BankConfiguration() {
     }
 
-    public Double getThresholdAmount() {
+    public BigDecimal getThresholdAmount() {
         return thresholdAmount;
     }
 
-    public void setThresholdAmount(Double thresholdAmount) {
+    public void setThresholdAmount(BigDecimal thresholdAmount) {
         this.thresholdAmount = thresholdAmount;
     }
 
-    public Double getFlatFeeAmount() {
+    public BigDecimal getFlatFeeAmount() {
         return flatFeeAmount;
     }
 
-    public void setFlatFeeAmount(Double flatFeeAmount) {
+    public void setFlatFeeAmount(BigDecimal flatFeeAmount) {
         this.flatFeeAmount = flatFeeAmount;
     }
 
-    public Integer getPercentFeeAmount() {
+    public BigInteger getPercentFeeAmount() {
         return percentFeeAmount;
     }
 
-    public void setPercentFeeAmount(Integer percentFeeAmount) {
+    public void setPercentFeeAmount(BigInteger percentFeeAmount) {
         this.percentFeeAmount = percentFeeAmount;
     }
 
@@ -59,4 +70,10 @@ public class BankConfiguration {
     public Bank getBank() {
         return bank;
     }
+
+    public void setBank(Bank bank) {
+        this.bank = bank;
+    }
+
+
 }

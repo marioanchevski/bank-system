@@ -5,6 +5,8 @@ import com.mybanksystem.transaction.JpaTransactionRepository;
 import com.mybanksystem.transaction.model.entity.Transaction;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 @Service
@@ -22,5 +24,10 @@ public class FindTransactionsForAccountServiceImpl implements FindTransactionsFo
                 .filter(transaction -> transaction.getAccountFrom().getId().equals(accountId) ||
                         transaction.getAccountTo().getId().equals(accountId))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Collection<Transaction> findAllTransactionsForAccount(String accountUUID) {
+        return transactionRepository.findAllForAccount(accountUUID);
     }
 }

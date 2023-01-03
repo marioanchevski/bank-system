@@ -1,22 +1,21 @@
 package com.mybanksystem.bank.service.Impl;
 
-import com.mybanksystem.bank.model.entity.Bank;
+import com.mybanksystem.bank.model.dto.BankDTO;
 import com.mybanksystem.bank.repository.JpaBankRepository;
 import com.mybanksystem.bank.model.exceptions.NonExistentBankException;
 import com.mybanksystem.bank.service.FindBankService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class FindBankServiceImpl implements FindBankService {
     private final JpaBankRepository bankRepository;
 
-    public FindBankServiceImpl(JpaBankRepository bankRepository) {
-        this.bankRepository = bankRepository;
-    }
-
     @Override
-    public Bank findBankById(Long bankId) throws NonExistentBankException {
-        return bankRepository.findById(bankId)
-                .orElseThrow(() -> new NonExistentBankException(bankId));
+    public BankDTO findBankById(String bankUUID) {
+        var bank = bankRepository.findBankByUUID(bankUUID)
+                .orElseThrow(() -> new NonExistentBankException(bankUUID));
+        return new BankDTO(bank.getName(), bankUUID);
     }
 }
