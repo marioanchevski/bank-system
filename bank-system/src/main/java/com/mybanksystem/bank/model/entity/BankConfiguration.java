@@ -7,12 +7,10 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 @Entity
-@Table(indexes = {})
 public class BankConfiguration {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    // bigdecimal
     private BigDecimal thresholdAmount;
     private BigDecimal flatFeeAmount;
     private BigInteger percentFeeAmount;
@@ -75,5 +73,14 @@ public class BankConfiguration {
         this.bank = bank;
     }
 
-
+    @Override
+    public String toString() {
+        return "BankConfiguration{" +
+                "id=" + id +
+                ", thresholdAmount=" + thresholdAmount +
+                ", flatFeeAmount=" + flatFeeAmount +
+                ", percentFeeAmount=" + percentFeeAmount +
+                ", bank=" + bank +
+                '}';
+    }
 }
