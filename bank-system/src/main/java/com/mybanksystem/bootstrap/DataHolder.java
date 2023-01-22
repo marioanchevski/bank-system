@@ -36,7 +36,6 @@ public class DataHolder {
 
     @PostConstruct
     public void init() {
-        System.out.println("did this");
         Bank testBank = new Bank("LinkPlus-Bank");
         testBank.setUUID("1");
         bankRepository.save(testBank);

@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/bank-system.iml" filepath="$PROJECT_DIR$/bank-system.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../configuration-service/configuration-service.iml" filepath="$PROJECT_DIR$/../configuration-service/configuration-service.iml" />
     </modules>
   </component>
 </project>

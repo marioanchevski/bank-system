@@ -29,25 +29,9 @@ public class Bank {
 
     private String name;
 
-/*
-    @OneToOne(mappedBy = "bank", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private BankTransferDetails bankTransferDetails;
-
-    @OneToOne(mappedBy = "bank", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private BankConfiguration bankConfiguration;
-*/
-
     public Bank() {
     }
 
-
-/*    public void setBankTransferDetails(BankTransferDetails bankTransferDetails) {
-        this.bankTransferDetails = bankTransferDetails;
-    }
-
-    public void setBankConfiguration(BankConfiguration bankConfiguration) {
-        this.bankConfiguration = bankConfiguration;
-    }*/
 
     public Bank(String name) {
         this.name = name;
@@ -66,15 +50,6 @@ public class Bank {
     public Long getId() {
         return id;
     }
-/*
-    public BankConfiguration getBankConfiguration() {
-        return bankConfiguration;
-    }
-
-    public BankTransferDetails getBankTransferDetails() {
-        return bankTransferDetails;
-    }*/
-
     public String getUUID() {
         return UUID;
     }
